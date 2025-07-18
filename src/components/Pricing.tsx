@@ -29,7 +29,7 @@ const Pricing = () => {
     },
     {
       name: 'PaidVersion',
-      price: 63,
+      price: 70,
       yearlyPrice: 756,
       description: t('pricing.plans.paid.description'),
       features: getTranslationArray('pricing.plans.paid.features'),
