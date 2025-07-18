@@ -193,13 +193,16 @@ const Pricing = () => {
             <p className="text-lg text-gray-600">{t('pricing.addons.subtitle')}</p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {addons.map((addon, index) => (
-              <div key={index} className="bg-white rounded-xl shadow-md border border-gray-200 p-6 hover:shadow-lg transition-shadow flex flex-col h-full">
+              <div key={index} className="bg-white rounded-xl shadow-md border border-gray-200 p-6 hover:shadow-lg transition-shadow flex flex-col h-full min-h-[200px]">
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">{addon.name}</h3>
                 <p className="text-gray-600 mb-4 flex-grow">{addon.description}</p>
                 <div className="mt-auto">
-                  <div className="text-2xl font-bold text-emerald-600">{addon.price}</div>
+                  <div className="text-2xl font-bold text-emerald-600 mb-3">{addon.price}</div>
+                  <button className="w-full bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-emerald-700 transition-colors font-medium">
+                    添加到方案
+                  </button>
                 </div>
               </div>
             ))}
