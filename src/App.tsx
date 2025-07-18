@@ -43,6 +43,17 @@ function AppContent({ showTrial1, setShowTrial1, showTrial2, setShowTrial2, show
     setShowPricing(false);
   };
 
+  const handleContactSales = () => {
+    setShowPricing(false);
+    // 延迟滚动，等待页面切换完成
+    setTimeout(() => {
+      const element = document.getElementById('contact');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
   if (showTrial1) {
     return <ProductTrial1 onBack={goHome} />;
   }
@@ -56,7 +67,7 @@ function AppContent({ showTrial1, setShowTrial1, showTrial2, setShowTrial2, show
       <div className="min-h-screen">
         <Header isHomePage={false} onGoHome={goHome} />
         <div className="pt-20">
-          <Pricing />
+          <Pricing onStartTrial={() => setShowTrial2(true)} onContactSales={handleContactSales} />
         </div>
         <Footer />
       </div>

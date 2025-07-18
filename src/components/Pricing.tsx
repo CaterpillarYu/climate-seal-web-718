@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { Check, X, ArrowRight, Zap, Building, Crown, Users } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
-const Pricing = () => {
+interface PricingProps {
+  onStartTrial?: () => void;
+  onContactSales?: () => void;
+}
+
+const Pricing: React.FC<PricingProps> = ({ onStartTrial, onContactSales }) => {
   const { t } = useLanguage();
   const [isAnnual, setIsAnnual] = useState(true);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('credit-card');
@@ -200,6 +205,7 @@ const Pricing = () => {
                 </div>
                 
                 <button
+                  onClick={plan.name === 'Customizing' ? onContactSales : onStartTrial}
                   className="w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg hover:shadow-xl mt-auto"
                 >
                   {plan.cta}
