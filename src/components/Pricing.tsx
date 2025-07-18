@@ -122,11 +122,11 @@ const Pricing: React.FC<PricingProps> = ({ onStartTrial, onContactSales }) => {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid lg:grid-cols-3 gap-8 mb-20">
+        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-20">
           {plans.map((plan, index) => (
             <div
               key={index}
-              className={`relative bg-white rounded-2xl shadow-lg border-2 transition-all duration-300 hover:shadow-xl flex flex-col ${
+              className={`relative bg-white rounded-xl shadow-md border-2 transition-all duration-300 hover:shadow-lg flex flex-col h-full ${
                 plan.popular 
                   ? 'border-emerald-500 ring-2 ring-emerald-200' 
                   : 'border-gray-200 hover:border-emerald-300'
@@ -141,7 +141,7 @@ const Pricing: React.FC<PricingProps> = ({ onStartTrial, onContactSales }) => {
                 </div>
               )}
               
-              <div className="p-8 flex-grow flex flex-col">
+              <div className="p-6 flex-grow flex flex-col">
                 <div className="flex items-center mb-4">
                   <plan.icon className={`w-8 h-8 text-${plan.color}-600 mr-3`} />
                   <h3 className="text-2xl font-bold text-gray-900">
@@ -162,7 +162,7 @@ const Pricing: React.FC<PricingProps> = ({ onStartTrial, onContactSales }) => {
                       </>
                     ) : (
                       <>
-                        <span className="text-2xl font-bold text-gray-900">定制ETL\业务系统对接\超级知识库\全托管模式等</span>
+                        <span className="text-lg font-bold text-gray-900">定制ETL\业务系统对接\超级知识库\全托管模式等</span>
                         <span className="text-lg text-gray-500 ml-1 opacity-0">{t('pricing.month')}</span>
                       </>
                     )}
@@ -185,7 +185,7 @@ const Pricing: React.FC<PricingProps> = ({ onStartTrial, onContactSales }) => {
                 
                 <p className="text-gray-600 mb-6 flex-grow">{plan.description}</p>
                 
-                <div className="mb-6">
+                <div className="mb-4">
                   <ul className="space-y-2">
                     {plan.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-center text-sm">
@@ -208,7 +208,7 @@ const Pricing: React.FC<PricingProps> = ({ onStartTrial, onContactSales }) => {
                 
                 <button
                   onClick={plan.name === 'Customizing' ? onContactSales : () => setShowTrialModal(true)}
-                  className="w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg hover:shadow-xl mt-auto"
+                  className="w-full py-2 px-4 rounded-lg font-medium transition-all duration-200 flex items-center justify-center bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg hover:shadow-xl mt-auto"
                 >
                   {plan.cta}
                   <ArrowRight className="w-4 h-4 ml-2" />
