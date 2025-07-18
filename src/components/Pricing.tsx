@@ -165,8 +165,13 @@ const Pricing = () => {
                       ${plan.yearlyPrice}{t('pricing.year')} ({t('pricing.save')} ${(plan.price * 12) - plan.yearlyPrice})
                     </p>
                   ) : (
-                    <p className="text-sm text-gray-500 mt-1 opacity-0">
-                      ${plan.price === 0 ? '0' : 'custom'}{t('pricing.year')} ({t('pricing.save')} $0)
+                    <p className="text-sm text-gray-500 mt-1">
+                      {plan.name === 'PaidVersion' && !isAnnual ? '按年付费折扣更多' : ''}
+                      {plan.name !== 'PaidVersion' && (
+                        <span className="opacity-0">
+                          ${plan.price === 0 ? '0' : 'custom'}{t('pricing.year')} ({t('pricing.save')} $0)
+                        </span>
+                      )}
                     </p>
                   )}
                 </div>
