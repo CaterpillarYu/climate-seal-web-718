@@ -55,6 +55,25 @@ const Pricing = () => {
 
   const addons = getTranslationArray('pricing.addons.items');
 
+  // 如果翻译数据获取失败，使用硬编码数据作为备用
+  const addonsData = addons.length > 0 ? addons : [
+    {
+      name: t('pricing.addons.items.0.name') || '更多排放因子匹配',
+      description: t('pricing.addons.items.0.description') || '100次排放因子匹配',
+      price: t('pricing.addons.items.0.price') || '¥280'
+    },
+    {
+      name: t('pricing.addons.items.1.name') || '自定义集成',
+      description: t('pricing.addons.items.1.description') || '与您现有的ERP、PLM或其他系统和数据库连接',
+      price: t('pricing.addons.items.1.price') || '联系销售'
+    },
+    {
+      name: t('pricing.addons.items.2.name') || '专业服务',
+      description: t('pricing.addons.items.2.description') || '专家咨询和实施支持',
+      price: t('pricing.addons.items.2.price') || '联系销售'
+    }
+  ];
+
   return (
     <div className="py-20 bg-gradient-to-br from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -194,7 +213,7 @@ const Pricing = () => {
           </div>
           
           <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {addons.map((addon, index) => (
+            {addonsData.map((addon, index) => (
               <div key={index} className="bg-white rounded-xl shadow-md border border-gray-200 p-6 hover:shadow-lg transition-shadow flex flex-col h-full min-h-[200px]">
                 <h3 className="text-xl font-semibold text-gray-900 mb-3">{addon.name}</h3>
                 <p className="text-gray-600 mb-4 flex-grow">{addon.description}</p>
