@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Check, X, ArrowRight, Zap, Building, Crown, Users } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import TrialRegistrationModal from './TrialRegistrationModal';
 
 interface PricingProps {
   onStartTrial?: () => void;
@@ -12,6 +13,7 @@ const Pricing: React.FC<PricingProps> = ({ onStartTrial, onContactSales }) => {
   const [isAnnual, setIsAnnual] = useState(true);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('credit-card');
   const [needInvoice, setNeedInvoice] = useState(false);
+  const [showTrialModal, setShowTrialModal] = useState(false);
 
   // Helper function to get array from translation
   const getTranslationArray = (key: string): any[] => {
@@ -205,7 +207,7 @@ const Pricing: React.FC<PricingProps> = ({ onStartTrial, onContactSales }) => {
                 </div>
                 
                 <button
-                  onClick={plan.name === 'Customizing' ? onContactSales : onStartTrial}
+                  onClick={plan.name === 'Customizing' ? onContactSales : () => setShowTrialModal(true)}
                   className="w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg hover:shadow-xl mt-auto"
                 >
                   {plan.cta}
@@ -648,6 +650,12 @@ const Pricing: React.FC<PricingProps> = ({ onStartTrial, onContactSales }) => {
           </div>
         </div>
       </div>
+      
+      {/* Trial Registration Modal */}
+      <TrialRegistrationModal 
+        isOpen={showTrialModal} 
+        onClose={() => setShowTrialModal(false)} 
+      />
     </div>
   );
 };
