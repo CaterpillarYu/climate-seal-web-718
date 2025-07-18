@@ -155,7 +155,7 @@ const Pricing = () => {
                       </>
                     ) : (
                       <>
-                        <span className="text-4xl font-bold text-gray-900">{t('pricing.plans.enterprise.name')}</span>
+                        <span className="text-2xl font-bold text-gray-900">定制ETL\业务系统对接\超级知识库\全托管模式等</span>
                         <span className="text-lg text-gray-500 ml-1 opacity-0">{t('pricing.month')}</span>
                       </>
                     )}
