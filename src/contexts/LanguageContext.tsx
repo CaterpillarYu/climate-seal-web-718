@@ -850,7 +850,23 @@ const translations: Record<string, Translations> = {
     about: {
       title: 'About Us',
       subtitle: 'Committed to promoting global carbon neutrality process',
-      description: 'We believe that through technological innovation, carbon footprint calculation can be made simple, accurate, and affordable, helping achieve global carbon neutrality goals.'
+      description: 'We believe that through technological innovation, carbon footprint calculation can be made simple, accurate, and affordable, helping achieve global carbon neutrality goals.',
+      digitalMRV: {
+        title: 'Digital MRV System',
+        description: 'Establish a complete digital monitoring, reporting and verification system to ensure the accuracy and traceability of carbon data.'
+      },
+      layeredAssurance: {
+        title: 'Layered Assurance System',
+        description: 'Provide multi-level quality assurance mechanisms, from self-declaration to third-party certification, to meet different needs.'
+      },
+      sharedDatabase: {
+        title: 'Shared Database',
+        description: 'Build a globally shared carbon emission factor database to improve calculation efficiency and data consistency.'
+      },
+      embeddedAPI: {
+        title: 'Embedded API',
+        description: 'Provide easy-to-integrate API interfaces that seamlessly embed carbon footprint calculation capabilities into various business systems.'
+      }
     },
     contact: {
       title: 'Contact Us',
