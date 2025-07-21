@@ -379,6 +379,193 @@ const translations: Record<string, Translations> = {
         cta: '联系销售'
       }
     },
+    trialModal: {
+      title: '开始免费试用',
+      stepIndicator: '步骤',
+      of: '/',
+      steps: {
+        personal: '个人信息',
+        company: '公司信息',
+        requirements: '产品需求'
+      },
+      personalInfo: {
+        title: '个人信息',
+        firstName: '名字',
+        lastName: '姓氏',
+        email: '企业邮箱',
+        phone: '手机号码',
+        position: '职位',
+        placeholders: {
+          firstName: '请输入您的名字',
+          lastName: '请输入您的姓氏',
+          email: '请输入您的企业邮箱',
+          phone: '请输入您的手机号码',
+          position: '请输入您的职位'
+        }
+      },
+      companyInfo: {
+        title: '公司信息',
+        companyName: '公司名称',
+        companySize: '公司规模',
+        industry: '行业',
+        placeholders: {
+          companyName: '请输入公司名称',
+          companySize: '请选择公司规模',
+          industry: '请选择行业'
+        },
+        companySizeOptions: [
+          { value: '', label: '请选择公司规模' },
+          { value: '1-10', label: '1-10人' },
+          { value: '11-50', label: '11-50人' },
+          { value: '51-200', label: '51-200人' },
+          { value: '201-1000', label: '201-1000人' },
+          { value: '1000+', label: '1000人以上' }
+        ],
+        industryOptions: [
+          { value: '', label: '请选择行业' },
+          { value: 'technology', label: '科技' },
+          { value: 'finance', label: '金融' },
+          { value: 'healthcare', label: '医疗健康' },
+          { value: 'education', label: '教育' },
+          { value: 'retail', label: '零售' },
+          { value: 'manufacturing', label: '制造业' },
+          { value: 'other', label: '其他' }
+        ]
+      },
+      requirements: {
+        title: '产品需求',
+        useCase: '主要使用场景',
+        productQuantity: '预计产品数量',
+        implementationTime: '实施时间',
+        placeholders: {
+          useCase: '请描述您的主要使用场景',
+          productQuantity: '请选择产品数量',
+          implementationTime: '请选择实施时间'
+        },
+        productQuantityOptions: [
+          { value: '', label: '请选择产品数量' },
+          { value: '1-10', label: '1-10个' },
+          { value: '11-50', label: '11-50个' },
+          { value: '51-100', label: '51-100个' },
+          { value: '100+', label: '100个以上' }
+        ],
+        implementationTimeOptions: [
+          { value: '', label: '请选择实施时间' },
+          { value: 'immediately', label: '立即开始' },
+          { value: '1-month', label: '1个月内' },
+          { value: '3-months', label: '3个月内' },
+          { value: '6-months', label: '6个月内' },
+          { value: 'later', label: '6个月后' }
+        ]
+      },
+      buttons: {
+        previous: '上一步',
+        next: '下一步',
+        submit: '提交申请'
+      },
+      required: '*'
+    },
+    productDemo: {
+      title: 'Climate Seal AI - 产品碳足迹平台（演示）',
+      controls: {
+        loopMode: '循环模式',
+        singleMode: '单次模式',
+        pauseDemo: '暂停演示',
+        continueDemo: '继续演示',
+        restart: '重新开始'
+      },
+      workStages: {
+        research: '需求调研',
+        regulation: '法规匹配',
+        dataCollection: '数据收集',
+        calculation: '计算',
+        riskAnalysis: '风险分析',
+        report: '报告'
+      },
+      riskAssessment: {
+        title: '风险评估与质量评分',
+        dataQuality: '数据质量评分',
+        uncertainty: '不确定性风险',
+        overallScore: '综合质量评分',
+        riskLevel: '综合风险等级',
+        medium: '中等',
+        metrics: {
+          completeness: '数据完整性',
+          temporal: '时间相关性',
+          geographical: '地理相关性',
+          technological: '技术相关性',
+          precision: '精度不确定性',
+          parameter: '参数不确定性',
+          model: '模型不确定性',
+          scenario: '情景不确定性',
+          dataQualityUncertainty: '数据质量不确定性'
+        }
+      },
+      basicInfo: {
+        title: '基础信息',
+        productName: '产品名称',
+        salesRegion: '销售区域',
+        regulation: '适配法规',
+        dataCollection: '数据收集周期',
+        lifecycleScope: '生命周期范围',
+        disclosureLevel: '披露等级',
+        values: {
+          smartphone: '智能手机',
+          global: '全球',
+          iso14040: 'ISO 14040/14067',
+          year2023: '2023年度',
+          cradleToGrave: '摇篮到坟墓',
+          certified: '认证级'
+        }
+      },
+      lifecycle: {
+        title: '产品碳足迹生命周期分析',
+        stages: {
+          rawMaterials: '原材料获取',
+          manufacturing: '生产制造',
+          transportation: '运输配送',
+          usage: '使用阶段',
+          disposal: '废弃处理'
+        },
+        bomInfo: {
+          title: 'BOM信息',
+          materialName: '材料名称',
+          description: '描述',
+          weight: '重量',
+          usage: '使用量',
+          unit: '单位',
+          emissionFactor: '排放因子',
+          source: '因子来源',
+          confidence: '置信度'
+        }
+      },
+      aiChat: {
+        title: 'Climate Seal AI',
+        inputPlaceholder: '输入消息...',
+        messages: [
+          {
+            type: 'ai',
+            content: '您好！我是Climate Seal AI助手。我已经根据您的产品基础信息为您匹配了适用的法规标准：ISO 14040/14067。接下来我们要进入数据收集阶段。'
+          },
+          {
+            type: 'user',
+            content: '请你继续。'
+          },
+          {
+            type: 'ai',
+            content: '好的，我们需要您提供原材料的相关信息，如果您有BOM表格并上传，这对于碳排放的核算有非常大的帮助。'
+          },
+          {
+            type: 'user',
+            content: '已上传BOM表格'
+          },
+          {
+            type: 'ai',
+            content: '收到您的BOM表格，完整度很高，我们将继续完成生产制造阶段的一些信息采集，然后我将为你执行计算，可以吗'
+          }
+        ]
+      }
+    },
     footer: {
       description: '通过先进的AI技术，让碳足迹计算变得简单、准确、可负担，助力企业实现可持续发展目标。',
       copyright: '© 2024 Climate Seal AI. 保留所有权利。',
@@ -445,6 +632,101 @@ const translations: Record<string, Translations> = {
     },
     solutions: {
       title: 'Our Solutions',
+      coreFeatures: {
+        title: 'Core Features Introduction',
+        automation: {
+          title: 'Fully Automated Zero-Threshold Toolchain',
+          features: [
+            'Regulation Matching: 0 regulation search and understanding, 0 professional background, automatic multi-regulation matching',
+            'Minimal Data: Automatic background data supplementation allowed by regulations, only minimal real-world data required',
+            'Modeling & Calculation: 0 manual modeling and 0 manual calculation, no carbon expertise required',
+            'Factor Matching: High-precision AI factor matching algorithm, accuracy over 95%, 0 manual assistance',
+            'Risk Analysis: Verification-grade risk and credibility assessment, 90%+ certification verification pass rate',
+            'Hotspots & Reports: Automatic emission hotspot analysis and multilingual reports, accurately supporting emission reduction and compliance'
+          ]
+        },
+        credibility: {
+          title: 'Certification-Grade Reliable Emission Results',
+          features: [
+            'Multi-product and regulations: Support different product types, regions, and regulatory requirements (ISO/CBAM/CSRD/DPP/PEF/EU battery)',
+            'Various carbon business types: Spanning disclosure, carbon tax, green supply chain procurement, carbon assets, carbon finance, carbon labels, product digital passports, battery passports',
+            'Support mainstream certifications: BSI, BV, TUV, SGS, and local certification bodies'
+          ]
+        }
+      },
+      valueComparison: {
+        title: 'Value Comparison Analysis',
+        subtitle: 'Traditional Solutions vs Climate Seal AI Solutions',
+        timeInvestment: {
+          title: 'Time Investment',
+          traditional: {
+            title: 'Traditional Solutions',
+            duration: '2-3 months to complete one report',
+            details: [
+              '• Outsourced consulting: User investment 1 week+, total cycle 2-3 months',
+              '• Software procurement: User investment 2 weeks-1 month, total cycle 2 weeks-1 month',
+              '• Certification verification: User investment 1 week+, total cycle 1.5 months',
+              '• Green supply chain: User investment long-term, total cycle long-term'
+            ]
+          },
+          climateSeal: {
+            title: 'Climate Seal AI',
+            duration: 'Hours to complete one report',
+            details: [
+              '• Calculation: No outsourced consulting, manual resource search and regulations',
+              '• Certification: No supplementation and modification of certification document review',
+              '• Supply chain: No supply chain training/professional support',
+              '• High data quality credibility (AI agent supports suppliers)'
+            ]
+          }
+        },
+        financialInvestment: {
+          title: 'Financial Investment',
+          traditional: {
+            title: 'Traditional Solutions',
+            cost: '$6-10k/report + supply chain management $70k+',
+            details: [
+              '• Outsourced consulting: Report fees + coordination consulting communication costs ($4-8k+)',
+              '• Software procurement: Software fees + internal carbon expert costs ($4-8k+)',
+              '• Certification verification: Coordination supplementation/modification/communication costs ($1.5k+)',
+              '• Green supply chain: Software + training + management investment ($70k+)'
+            ]
+          },
+          climateSeal: {
+            title: 'Climate Seal AI',
+            cost: '$70/1-3 reports + supply chain management $0',
+            details: [
+              '• Calculation: No outsourced consulting, manual resource search and regulations',
+              '• Certification: No supplementation and modification of certification document review',
+              '• Supply chain: No supply chain training/professional support',
+              '• Supplier burden $70/compliance object'
+            ]
+          }
+        },
+        salesImpact: {
+          title: 'Sales Impact',
+          traditional: {
+            title: 'Traditional Solutions',
+            impact: 'Compliance risks affect sales, resources occupied by carbon calculation',
+            details: [
+              '• ISO14067, digital passports, carbon tax requirements affect sales',
+              '• Carbon reduction material premiums and scarcity',
+              '• Carbon reduction project asset development and green loan resources occupied',
+              '• Can bring more revenue but calculation occupies resources'
+            ]
+          },
+          climateSeal: {
+            title: 'Climate Seal AI',
+            impact: 'Release carbon reduction resources, focus on business growth',
+            details: [
+              '• Same budget, more funds and manpower invested in emission reduction projects',
+              '• More time to compete for low-carbon orders/procurement, low-carbon subsidies',
+              '• Focus on low-carbon finance, carbon asset development',
+              '    • Green supply chain finance discount opportunities'
+            ]
+          }
+        }
+      },
       processComparison: {
         title: 'Process Comparison',
         subtitle: 'Detailed comparison of workflow for three solutions',
@@ -782,6 +1064,193 @@ const translations: Record<string, Translations> = {
           'Training and consulting services'
         ],
         cta: 'Contact Sales'
+      }
+    },
+    trialModal: {
+      title: 'Start Free Trial',
+      stepIndicator: 'Step',
+      of: ' of ',
+      steps: {
+        personal: 'Personal Information',
+        company: 'Company Information',
+        requirements: 'Product Requirements'
+      },
+      personalInfo: {
+        title: 'Personal Information',
+        firstName: 'First Name',
+        lastName: 'Last Name',
+        email: 'Business Email',
+        phone: 'Phone Number',
+        position: 'Position',
+        placeholders: {
+          firstName: 'Enter your first name',
+          lastName: 'Enter your last name',
+          email: 'Enter your business email',
+          phone: 'Enter your phone number',
+          position: 'Enter your position'
+        }
+      },
+      companyInfo: {
+        title: 'Company Information',
+        companyName: 'Company Name',
+        companySize: 'Company Size',
+        industry: 'Industry',
+        placeholders: {
+          companyName: 'Enter company name',
+          companySize: 'Select company size',
+          industry: 'Select industry'
+        },
+        companySizeOptions: [
+          { value: '', label: 'Select company size' },
+          { value: '1-10', label: '1-10 employees' },
+          { value: '11-50', label: '11-50 employees' },
+          { value: '51-200', label: '51-200 employees' },
+          { value: '201-1000', label: '201-1000 employees' },
+          { value: '1000+', label: '1000+ employees' }
+        ],
+        industryOptions: [
+          { value: '', label: 'Select industry' },
+          { value: 'technology', label: 'Technology' },
+          { value: 'finance', label: 'Finance' },
+          { value: 'healthcare', label: 'Healthcare' },
+          { value: 'education', label: 'Education' },
+          { value: 'retail', label: 'Retail' },
+          { value: 'manufacturing', label: 'Manufacturing' },
+          { value: 'other', label: 'Other' }
+        ]
+      },
+      requirements: {
+        title: 'Product Requirements',
+        useCase: 'Primary Use Case',
+        productQuantity: 'Expected Product Quantity',
+        implementationTime: 'Implementation Timeline',
+        placeholders: {
+          useCase: 'Describe your primary use case',
+          productQuantity: 'Select product quantity',
+          implementationTime: 'Select implementation timeline'
+        },
+        productQuantityOptions: [
+          { value: '', label: 'Select product quantity' },
+          { value: '1-10', label: '1-10 products' },
+          { value: '11-50', label: '11-50 products' },
+          { value: '51-100', label: '51-100 products' },
+          { value: '100+', label: '100+ products' }
+        ],
+        implementationTimeOptions: [
+          { value: '', label: 'Select implementation timeline' },
+          { value: 'immediately', label: 'Start immediately' },
+          { value: '1-month', label: 'Within 1 month' },
+          { value: '3-months', label: 'Within 3 months' },
+          { value: '6-months', label: 'Within 6 months' },
+          { value: 'later', label: 'After 6 months' }
+        ]
+      },
+      buttons: {
+        previous: 'Previous',
+        next: 'Next',
+        submit: 'Submit Application'
+      },
+      required: '*'
+    },
+    productDemo: {
+      title: 'Climate Seal AI - Product Carbon Footprint Platform (Demo)',
+      controls: {
+        loopMode: 'Loop Mode',
+        singleMode: 'Single Mode',
+        pauseDemo: 'Pause Demo',
+        continueDemo: 'Continue Demo',
+        restart: 'Restart'
+      },
+      workStages: {
+        research: 'Requirements Research',
+        regulation: 'Regulation Matching',
+        dataCollection: 'Data Collection',
+        calculation: 'Calculation',
+        riskAnalysis: 'Risk Analysis',
+        report: 'Report'
+      },
+      riskAssessment: {
+        title: 'Risk Assessment & Quality Scoring',
+        dataQuality: 'Data Quality Score',
+        uncertainty: 'Uncertainty Risk',
+        overallScore: 'Overall Quality Score',
+        riskLevel: 'Overall Risk Level',
+        medium: 'Medium',
+        metrics: {
+          completeness: 'Data Completeness',
+          temporal: 'Temporal Relevance',
+          geographical: 'Geographical Relevance',
+          technological: 'Technological Relevance',
+          precision: 'Precision Uncertainty',
+          parameter: 'Parameter Uncertainty',
+          model: 'Model Uncertainty',
+          scenario: 'Scenario Uncertainty',
+          dataQualityUncertainty: 'Data Quality Uncertainty'
+        }
+      },
+      basicInfo: {
+        title: 'Basic Information',
+        productName: 'Product Name',
+        salesRegion: 'Sales Region',
+        regulation: 'Applicable Regulation',
+        dataCollection: 'Data Collection Period',
+        lifecycleScope: 'Lifecycle Scope',
+        disclosureLevel: 'Disclosure Level',
+        values: {
+          smartphone: 'Smartphone',
+          global: 'Global',
+          iso14040: 'ISO 14040/14067',
+          year2023: '2023 Annual',
+          cradleToGrave: 'Cradle to Grave',
+          certified: 'Certified Level'
+        }
+      },
+      lifecycle: {
+        title: 'Product Carbon Footprint Lifecycle Analysis',
+        stages: {
+          rawMaterials: 'Raw Materials',
+          manufacturing: 'Manufacturing',
+          transportation: 'Transportation',
+          usage: 'Usage Phase',
+          disposal: 'End of Life'
+        },
+        bomInfo: {
+          title: 'BOM Information',
+          materialName: 'Material Name',
+          description: 'Description',
+          weight: 'Weight',
+          usage: 'Usage',
+          unit: 'Unit',
+          emissionFactor: 'Emission Factor',
+          source: 'Factor Source',
+          confidence: 'Confidence'
+        }
+      },
+      aiChat: {
+        title: 'Climate Seal AI',
+        inputPlaceholder: 'Type message...',
+        messages: [
+          {
+            type: 'ai',
+            content: 'Hello! I am the Climate Seal AI assistant. I have matched the applicable regulatory standards for your product basic information: ISO 14040/14067. Next, we need to enter the data collection phase.'
+          },
+          {
+            type: 'user',
+            content: 'Please continue.'
+          },
+          {
+            type: 'ai',
+            content: 'Alright, we need you to provide information about raw materials. If you have a BOM table and upload it, this will be very helpful for carbon emission accounting.'
+          },
+          {
+            type: 'user',
+            content: 'BOM table uploaded'
+          },
+          {
+            type: 'ai',
+            content: 'Received your BOM table, the completeness is very high. We will continue to complete some information collection for the manufacturing phase, and then I will perform calculations for you. Is that okay?'
+          }
+        ]
       }
     },
     footer: {

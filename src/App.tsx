@@ -9,11 +9,13 @@ import Footer from './components/Footer';
 import ProductTrial1 from './components/ProductTrial1';
 import ProductTrial2 from './components/ProductTrial2';
 import Pricing from './components/Pricing';
+import TrialRegistrationModal from './components/TrialRegistrationModal';
 
 function App() {
   const [showTrial1, setShowTrial1] = useState(false);
   const [showTrial2, setShowTrial2] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
+  const [showTrialModal, setShowTrialModal] = useState(false);
 
   return (
     <LanguageProvider>
@@ -24,6 +26,8 @@ function App() {
         setShowTrial2={setShowTrial2}
         showPricing={showPricing}
         setShowPricing={setShowPricing}
+        showTrialModal={showTrialModal}
+        setShowTrialModal={setShowTrialModal}
       />
     </LanguageProvider>
   );
@@ -36,6 +40,8 @@ function AppContent({ showTrial1, setShowTrial1, showTrial2, setShowTrial2, show
   setShowTrial2: (show: boolean) => void;
   showPricing: boolean;
   setShowPricing: (show: boolean) => void;
+  showTrialModal: boolean;
+  setShowTrialModal: (show: boolean) => void;
 }) {
   const goHome = () => {
     setShowTrial1(false);
@@ -54,6 +60,9 @@ function AppContent({ showTrial1, setShowTrial1, showTrial2, setShowTrial2, show
     }, 100);
   };
 
+  const handleStartTrial = () => {
+    setShowTrialModal(true);
+  };
   if (showTrial1) {
     return <ProductTrial1 onBack={goHome} />;
   }
@@ -67,9 +76,10 @@ function AppContent({ showTrial1, setShowTrial1, showTrial2, setShowTrial2, show
       <div className="min-h-screen">
         <Header isHomePage={false} onGoHome={goHome} />
         <div className="pt-20">
-          <Pricing onStartTrial={() => setShowTrial2(true)} onContactSales={handleContactSales} />
+          <Pricing onStartTrial={handleStartTrial} onContactSales={handleContactSales} />
         </div>
         <Footer />
+        <TrialRegistrationModal isOpen={showTrialModal} onClose={() => setShowTrialModal(false)} />
       </div>
     );
   }
@@ -77,11 +87,12 @@ function AppContent({ showTrial1, setShowTrial1, showTrial2, setShowTrial2, show
   return (
     <div className="min-h-screen">
       <Header onViewPricing={() => setShowPricing(true)} onGoHome={goHome} />
-      <Hero onStartCalculator={() => setShowTrial2(true)} onViewPricing={() => setShowPricing(true)} />
-      <Solutions />
+      <Hero onStartCalculator={handleStartTrial} onViewPricing={() => setShowPricing(true)} />
+      <Solutions onStartTrial={handleStartTrial} />
       <About />
       <Contact />
       <Footer />
+      <TrialRegistrationModal isOpen={showTrialModal} onClose={() => setShowTrialModal(false)} />
     </div>
   );
 }

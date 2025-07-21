@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, ChevronLeft, ChevronRight, Check } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface TrialRegistrationModalProps {
   isOpen: boolean;
@@ -7,6 +8,7 @@ interface TrialRegistrationModalProps {
 }
 
 const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen, onClose }) => {
+  const { t } = useLanguage();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     // 步骤1：个人信息
@@ -59,6 +61,16 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
     onClose();
   };
 
+  // 获取翻译数据
+  const getTranslationArray = (key: string): any[] => {
+    const result = t(key);
+    return Array.isArray(result) ? result : [];
+  };
+
+  const companySizeOptions = getTranslationArray('trialModal.companyInfo.companySizeOptions');
+  const industryOptions = getTranslationArray('trialModal.companyInfo.industryOptions');
+  const productQuantityOptions = getTranslationArray('trialModal.requirements.productQuantityOptions');
+  const implementationTimeOptions = getTranslationArray('trialModal.requirements.implementationTimeOptions');
   if (!isOpen) return null;
 
   return (
@@ -67,8 +79,8 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
         {/* 头部 */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">开始免费试用</h2>
-            <p className="text-gray-600 mt-1">步骤 {currentStep} / 3</p>
+            <h2 className="text-2xl font-bold text-gray-900">{t('trialModal.title')}</h2>
+            <p className="text-gray-600 mt-1">{t('trialModal.stepIndicator')} {currentStep}{t('trialModal.of')}3</p>
           </div>
           <button
             onClick={onClose}
@@ -102,72 +114,72 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
         <div className="px-6 pb-6">
           {currentStep === 1 && (
             <div className="space-y-6">
-              <h3 className="text-xl font-semibold text-gray-900">个人信息</h3>
+              <h3 className="text-xl font-semibold text-gray-900">{t('trialModal.personalInfo.title')}</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    名字<span className="text-red-600">*</span>
+                    {t('trialModal.personalInfo.firstName')}<span className="text-red-600">{t('trialModal.required')}</span>
                   </label>
                   <input
                     type="text"
                     value={formData.firstName}
                     onChange={(e) => handleInputChange('firstName', e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    placeholder="请输入您的名字"
+                    placeholder={t('trialModal.personalInfo.placeholders.firstName')}
                   />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    姓氏<span className="text-red-600">*</span>
+                    {t('trialModal.personalInfo.lastName')}<span className="text-red-600">{t('trialModal.required')}</span>
                   </label>
                   <input
                     type="text"
                     value={formData.lastName}
                     onChange={(e) => handleInputChange('lastName', e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    placeholder="请输入您的姓氏"
+                    placeholder={t('trialModal.personalInfo.placeholders.lastName')}
                   />
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  企业邮箱<span className="text-red-600">*</span>
+                  {t('trialModal.personalInfo.email')}<span className="text-red-600">{t('trialModal.required')}</span>
                 </label>
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleInputChange('email', e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="请输入您的企业邮箱"
+                  placeholder={t('trialModal.personalInfo.placeholders.email')}
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  手机号码<span className="text-red-600">*</span>
+                  {t('trialModal.personalInfo.phone')}<span className="text-red-600">{t('trialModal.required')}</span>
                 </label>
                 <input
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => handleInputChange('phone', e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="请输入您的手机号码"
+                  placeholder={t('trialModal.personalInfo.placeholders.phone')}
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  职位<span className="text-red-600">*</span>
+                  {t('trialModal.personalInfo.position')}<span className="text-red-600">{t('trialModal.required')}</span>
                 </label>
                 <input
                   type="text"
                   value={formData.position}
                   onChange={(e) => handleInputChange('position', e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="请输入您的职位"
+                  placeholder={t('trialModal.personalInfo.placeholders.position')}
                 />
               </div>
             </div>
@@ -175,56 +187,48 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
 
           {currentStep === 2 && (
             <div className="space-y-6">
-              <h3 className="text-xl font-semibold text-gray-900">公司信息</h3>
+              <h3 className="text-xl font-semibold text-gray-900">{t('trialModal.companyInfo.title')}</h3>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  公司名称<span className="text-red-600">*</span>
+                  {t('trialModal.companyInfo.companyName')}<span className="text-red-600">{t('trialModal.required')}</span>
                 </label>
                 <input
                   type="text"
                   value={formData.companyName}
                   onChange={(e) => handleInputChange('companyName', e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="请输入公司名称"
+                  placeholder={t('trialModal.companyInfo.placeholders.companyName')}
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  公司规模<span className="text-red-600">*</span>
+                  {t('trialModal.companyInfo.companySize')}<span className="text-red-600">{t('trialModal.required')}</span>
                 </label>
                 <select
                   value={formData.companySize}
                   onChange={(e) => handleInputChange('companySize', e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 >
-                  <option value="">请选择公司规模</option>
-                  <option value="1-10">1-10人</option>
-                  <option value="11-50">11-50人</option>
-                  <option value="51-200">51-200人</option>
-                  <option value="201-1000">201-1000人</option>
-                  <option value="1000+">1000人以上</option>
+                  {companySizeOptions.map((option: any, index: number) => (
+                    <option key={index} value={option.value}>{option.label}</option>
+                  ))}
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  行业<span className="text-red-600">*</span>
+                  {t('trialModal.companyInfo.industry')}<span className="text-red-600">{t('trialModal.required')}</span>
                 </label>
                 <select
                   value={formData.industry}
                   onChange={(e) => handleInputChange('industry', e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 >
-                  <option value="">请选择行业</option>
-                  <option value="technology">科技</option>
-                  <option value="finance">金融</option>
-                  <option value="healthcare">医疗健康</option>
-                  <option value="education">教育</option>
-                  <option value="retail">零售</option>
-                  <option value="manufacturing">制造业</option>
-                  <option value="other">其他</option>
+                  {industryOptions.map((option: any, index: number) => (
+                    <option key={index} value={option.value}>{option.label}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -232,53 +236,48 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
 
           {currentStep === 3 && (
             <div className="space-y-6">
-              <h3 className="text-xl font-semibold text-gray-900">产品需求</h3>
+              <h3 className="text-xl font-semibold text-gray-900">{t('trialModal.requirements.title')}</h3>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  主要使用场景<span className="text-red-600">*</span>
+                  {t('trialModal.requirements.useCase')}<span className="text-red-600">{t('trialModal.required')}</span>
                 </label>
                 <textarea
                   value={formData.useCase}
                   onChange={(e) => handleInputChange('useCase', e.target.value)}
                   rows={4}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="请描述您的主要使用场景"
+                  placeholder={t('trialModal.requirements.placeholders.useCase')}
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  预计产品数量<span className="text-red-600">*</span>
+                  {t('trialModal.requirements.productQuantity')}<span className="text-red-600">{t('trialModal.required')}</span>
                 </label>
                 <select
                   value={formData.productQuantity}
                   onChange={(e) => handleInputChange('productQuantity', e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 >
-                  <option value="">请选择产品数量</option>
-                  <option value="1-10">1-10个</option>
-                  <option value="11-50">11-50个</option>
-                  <option value="51-100">51-100个</option>
-                  <option value="100+">100个以上</option>
+                  {productQuantityOptions.map((option: any, index: number) => (
+                    <option key={index} value={option.value}>{option.label}</option>
+                  ))}
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  实施时间<span className="text-red-600">*</span>
+                  {t('trialModal.requirements.implementationTime')}<span className="text-red-600">{t('trialModal.required')}</span>
                 </label>
                 <select
                   value={formData.implementationTime}
                   onChange={(e) => handleInputChange('implementationTime', e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 >
-                  <option value="">请选择实施时间</option>
-                  <option value="immediately">立即开始</option>
-                  <option value="1-month">1个月内</option>
-                  <option value="3-months">3个月内</option>
-                  <option value="6-months">6个月内</option>
-                  <option value="later">6个月后</option>
+                  {implementationTimeOptions.map((option: any, index: number) => (
+                    <option key={index} value={option.value}>{option.label}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -297,7 +296,7 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
             }`}
           >
             <ChevronLeft className="w-4 h-4 mr-1" />
-            上一步
+            {t('trialModal.buttons.previous')}
           </button>
 
           {currentStep < 3 ? (
@@ -310,7 +309,7 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
                   : 'bg-green-500 text-white hover:bg-green-600'
               }`}
             >
-              下一步
+              {t('trialModal.buttons.next')}
               <ChevronRight className="w-4 h-4 ml-1" />
             </button>
           ) : (
@@ -318,7 +317,7 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
               onClick={handleSubmit}
               className="flex items-center px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
             >
-              提交申请
+              {t('trialModal.buttons.submit')}
               <Check className="w-4 h-4 ml-1" />
             </button>
           )}

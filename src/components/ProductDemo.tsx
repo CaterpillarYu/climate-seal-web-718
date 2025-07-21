@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, Clock, Send } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const ProductDemo = () => {
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState('原材料获取');
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [showBomAnimation, setShowBomAnimation] = useState(false);
@@ -10,28 +12,34 @@ const ProductDemo = () => {
   const [workStageIndex, setWorkStageIndex] = useState(2); // 从数据收集阶段开始
   const [isLooping, setIsLooping] = useState(true);
 
+  // Helper function to get array from translation
+  const getTranslationArray = (key: string): any[] => {
+    const result = t(key);
+    return Array.isArray(result) ? result : [];
+  };
+
   const workStages = [
-    { name: '需求调研', status: 'completed', icon: '✓' },
-    { name: '法规匹配', status: 'completed', icon: '✓' },
-    { name: '数据收集', status: workStageIndex >= 2 ? (workStageIndex === 2 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 2 ? (workStageIndex === 2 ? '⏳' : '✓') : '○' },
-    { name: '计算', status: workStageIndex >= 3 ? (workStageIndex === 3 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 3 ? (workStageIndex === 3 ? '⏳' : '✓') : '○' },
-    { name: '风险分析', status: workStageIndex >= 4 ? (workStageIndex === 4 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 4 ? (workStageIndex === 4 ? '⏳' : '✓') : '○' },
-    { name: '报告', status: workStageIndex >= 5 ? (workStageIndex === 5 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 5 ? (workStageIndex === 5 ? '⏳' : '✓') : '○' }
+    { name: t('productDemo.workStages.research'), status: 'completed', icon: '✓' },
+    { name: t('productDemo.workStages.regulation'), status: 'completed', icon: '✓' },
+    { name: t('productDemo.workStages.dataCollection'), status: workStageIndex >= 2 ? (workStageIndex === 2 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 2 ? (workStageIndex === 2 ? '⏳' : '✓') : '○' },
+    { name: t('productDemo.workStages.calculation'), status: workStageIndex >= 3 ? (workStageIndex === 3 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 3 ? (workStageIndex === 3 ? '⏳' : '✓') : '○' },
+    { name: t('productDemo.workStages.riskAnalysis'), status: workStageIndex >= 4 ? (workStageIndex === 4 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 4 ? (workStageIndex === 4 ? '⏳' : '✓') : '○' },
+    { name: t('productDemo.workStages.report'), status: workStageIndex >= 5 ? (workStageIndex === 5 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 5 ? (workStageIndex === 5 ? '⏳' : '✓') : '○' }
   ];
 
   const qualityMetrics = [
-    { name: '数据完整性', score: '92%' },
-    { name: '时间相关性', score: '88%' },
-    { name: '地理相关性', score: '85%' },
-    { name: '技术相关性', score: '90%' },
-    { name: '精度不确定性', score: '87%' }
+    { name: t('productDemo.riskAssessment.metrics.completeness'), score: '92%' },
+    { name: t('productDemo.riskAssessment.metrics.temporal'), score: '88%' },
+    { name: t('productDemo.riskAssessment.metrics.geographical'), score: '85%' },
+    { name: t('productDemo.riskAssessment.metrics.technological'), score: '90%' },
+    { name: t('productDemo.riskAssessment.metrics.precision'), score: '87%' }
   ];
 
   const riskMetrics = [
-    { name: '参数不确定性', value: '15%' },
-    { name: '模型不确定性', value: '12%' },
-    { name: '情景不确定性', value: '18%' },
-    { name: '数据质量不确定性', value: '10%' }
+    { name: t('productDemo.riskAssessment.metrics.parameter'), value: '15%' },
+    { name: t('productDemo.riskAssessment.metrics.model'), value: '12%' },
+    { name: t('productDemo.riskAssessment.metrics.scenario'), value: '18%' },
+    { name: t('productDemo.riskAssessment.metrics.dataQualityUncertainty'), value: '10%' }
   ];
 
   const bomData = [
@@ -48,83 +56,19 @@ const ProductDemo = () => {
     { material: '聚合物薄膜', desc: '屏幕保护层', weight: '2g', usage: '1', unit: '件', factor: '5.3', source: 'Ecoinvent', confidence: '88%' }
   ];
 
-  const chatMessages = [
-    {
-      type: 'ai',
-      content: '您好！我是Climate Seal AI助手。我已经根据您的产品基础信息为您匹配了适用的法规标准：ISO 14040/14067。接下来我们要进入数据收集阶段。',
-      stage: '原材料获取',
-      delay: 1000
-    },
-    {
-      type: 'user',
-      content: '请你继续。',
-      stage: '原材料获取',
-      delay: 2000
-    },
-    {
-      type: 'ai',
-      content: '好的，我们需要您提供原材料的相关信息，如果您有BOM表格并上传，这对于碳排放的核算有非常大的帮助。',
-      stage: '原材料获取',
-      delay: 1500,
-      triggerBom: true
-    },
-    {
-      type: 'user',
-      content: '已上传BOM表格',
-      stage: '原材料获取',
-      delay: 3000
-    },
-    {
-      type: 'ai',
-      content: '收到您的BOM表格，完整度很高，我们将继续完成生产制造阶段的一些信息采集，然后我将为你执行计算，可以吗',
-      stage: '生产制造',
-      delay: 2000,
-      triggerStageChange: '生产制造'
-    },
-    {
-      type: 'user',
-      content: '好的，请继续',
-      stage: '生产制造',
-      delay: 2000
-    },
-    {
-      type: 'ai',
-      content: '正在收集生产制造阶段的能耗数据...现在进入运输配送阶段的数据收集。',
-      stage: '运输配送',
-      delay: 2500,
-      triggerStageChange: '运输配送',
-      triggerWorkStage: 3
-    },
-    {
-      type: 'ai',
-      content: '运输数据收集完成，现在分析使用阶段的环境影响...',
-      stage: '使用阶段',
-      delay: 2500,
-      triggerStageChange: '使用阶段'
-    },
-    {
-      type: 'ai',
-      content: '最后收集废弃处理阶段的数据，进行完整的生命周期分析...',
-      stage: '废弃处理',
-      delay: 2500,
-      triggerStageChange: '废弃处理',
-      triggerWorkStage: 4
-    },
-    {
-      type: 'ai',
-      content: '数据收集完成！正在进行碳足迹计算和风险分析...',
-      stage: '废弃处理',
-      delay: 2000,
-      triggerWorkStage: 5
-    },
-    {
-      type: 'ai',
-      content: '分析完成！您的产品碳足迹报告已生成，总排放量为12.5 kg CO₂e/单位。',
-      stage: '废弃处理',
-      delay: 2000,
-      triggerWorkStage: 6
-    }
-  ];
+  // Get chat messages from translation
+  const chatMessages = getTranslationArray('productDemo.aiChat.messages').map((msg: any, index: number) => ({
+    ...msg,
+    stage: t('productDemo.lifecycle.stages.rawMaterials'),
+    delay: 1000 + index * 500,
+    ...(index === 2 && { triggerBom: true }),
+    ...(index === 4 && { triggerStageChange: t('productDemo.lifecycle.stages.manufacturing') }),
+    ...(index === 6 && { triggerStageChange: t('productDemo.lifecycle.stages.transportation'), triggerWorkStage: 3 }),
+    ...(index === 7 && { triggerStageChange: t('productDemo.lifecycle.stages.usage') }),
+    ...(index === 8 && { triggerStageChange: t('productDemo.lifecycle.stages.disposal'), triggerWorkStage: 4 }),
+    ...(index === 9 && { triggerWorkStage: 5 }),
+    ...(index === 10 && { triggerWorkStage: 6 })
+  }));
 
   // 自动播放逻辑
   useEffect(() => {
@@ -169,7 +113,7 @@ const ProductDemo = () => {
   const resetDemo = () => {
     setCurrentMessageIndex(0);
     setDisplayedMessages([]);
-    setActiveTab('原材料获取');
+    setActiveTab(t('productDemo.lifecycle.stages.rawMaterials'));
     setWorkStageIndex(2);
     setShowBomAnimation(false);
     setIsAutoPlaying(true);
@@ -187,14 +131,20 @@ const ProductDemo = () => {
     setIsAutoPlaying(false);
   };
 
-  const lifecycleTabs = ['原材料获取', '生产制造', '运输配送', '使用阶段', '废弃处理'];
+  const lifecycleTabs = [
+    t('productDemo.lifecycle.stages.rawMaterials'),
+    t('productDemo.lifecycle.stages.manufacturing'),
+    t('productDemo.lifecycle.stages.transportation'),
+    t('productDemo.lifecycle.stages.usage'),
+    t('productDemo.lifecycle.stages.disposal')
+  ];
 
   return (
     <div className="w-full bg-gray-900 text-white rounded-2xl overflow-hidden" style={{ height: '700px' }}>
       {/* Header */}
       <div className="bg-gray-800 px-6 py-4 border-b border-gray-700">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">Climate Seal AI - 产品碳足迹平台（演示）</h3>
+          <h3 className="text-lg font-semibold">{t('productDemo.title')}</h3>
           
           {/* 演示控制按钮 */}
           <div className="flex space-x-2">
@@ -206,7 +156,7 @@ const ProductDemo = () => {
                   : 'bg-gray-600 text-white hover:bg-gray-700'
               }`}
             >
-              {isLooping ? '循环模式' : '单次模式'}
+              {isLooping ? t('productDemo.controls.loopMode') : t('productDemo.controls.singleMode')}
             </button>
             <button
               onClick={toggleAutoPlay}
@@ -216,13 +166,13 @@ const ProductDemo = () => {
                   : 'bg-green-600 text-white hover:bg-green-700'
               }`}
             >
-              {isAutoPlaying ? '暂停演示' : '继续演示'}
+              {isAutoPlaying ? t('productDemo.controls.pauseDemo') : t('productDemo.controls.continueDemo')}
             </button>
             <button
               onClick={resetDemo}
               className="px-3 py-1 text-xs bg-gray-600 text-white rounded hover:bg-gray-700"
             >
-              重新开始
+              {t('productDemo.controls.restart')}
             </button>
           </div>
         </div>
@@ -234,7 +184,7 @@ const ProductDemo = () => {
         <div className="w-64 bg-gray-800 border-r border-gray-700 flex flex-col">
           {/* 工作阶段 */}
           <div className="p-4 border-b border-gray-700">
-            <h4 className="text-emerald-400 font-medium text-sm mb-3">工作阶段</h4>
+            <h4 className="text-emerald-400 font-medium text-sm mb-3">{t('productDemo.workStages.title')}</h4>
             <div className="space-y-2">
               {workStages.map((stage, index) => (
                 <div key={index} className="flex items-center space-x-2">
@@ -259,11 +209,11 @@ const ProductDemo = () => {
 
           {/* 风险评估与质量评分 */}
           <div className="flex-1 p-3 overflow-y-auto">
-            <h4 className="text-emerald-400 font-medium text-sm mb-3">风险评估与质量评分</h4>
+            <h4 className="text-emerald-400 font-medium text-sm mb-3">{t('productDemo.riskAssessment.title')}</h4>
             
             {/* 数据质量评分 */}
             <div className="mb-4">
-              <h5 className="text-white font-medium text-xs mb-2">数据质量评分</h5>
+              <h5 className="text-white font-medium text-xs mb-2">{t('productDemo.riskAssessment.dataQuality')}</h5>
               <div className="space-y-1">
                 {qualityMetrics.map((metric, index) => (
                   <div key={index} className="flex justify-between text-xs">
@@ -274,15 +224,15 @@ const ProductDemo = () => {
               </div>
               <div className="mt-2 pt-2 border-t border-gray-600">
                 <div className="flex justify-between">
-                  <span className="text-white font-medium text-xs">综合质量评分</span>
-                  <span className="text-emerald-400 font-bold text-sm">88分</span>
+                  <span className="text-white font-medium text-xs">{t('productDemo.riskAssessment.overallScore')}</span>
+                  <span className="text-emerald-400 font-bold text-sm">88</span>
                 </div>
               </div>
             </div>
 
             {/* 不确定性风险 */}
             <div>
-              <h5 className="text-white font-medium text-xs mb-2">不确定性风险</h5>
+              <h5 className="text-white font-medium text-xs mb-2">{t('productDemo.riskAssessment.uncertainty')}</h5>
               <div className="space-y-1">
                 {riskMetrics.map((metric, index) => (
                   <div key={index} className="flex justify-between text-xs">
@@ -293,8 +243,8 @@ const ProductDemo = () => {
               </div>
               <div className="mt-2 pt-2 border-t border-gray-600">
                 <div className="flex justify-between">
-                  <span className="text-white font-medium text-xs">综合风险等级</span>
-                  <span className="text-yellow-400 font-bold text-xs">中等</span>
+                  <span className="text-white font-medium text-xs">{t('productDemo.riskAssessment.riskLevel')}</span>
+                  <span className="text-yellow-400 font-bold text-xs">{t('productDemo.riskAssessment.medium')}</span>
                 </div>
               </div>
             </div>
@@ -305,48 +255,48 @@ const ProductDemo = () => {
         <div className="flex-1 flex flex-col bg-gray-900">
           {/* 基础信息 */}
           <div className="p-6 border-b border-gray-700 bg-gray-800">
-            <h4 className="text-emerald-400 font-medium text-sm mb-3">基础信息</h4>
+            <h4 className="text-emerald-400 font-medium text-sm mb-3">{t('productDemo.basicInfo.title')}</h4>
             <div className="grid grid-cols-3 gap-3">
               <div>
-                <label className="block text-xs text-gray-400 mb-1 text-xs">产品名称</label>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">{t('productDemo.basicInfo.productName')}</label>
                 <input 
                   type="text" 
-                  value="智能手机" 
+                  value={t('productDemo.basicInfo.values.smartphone')} 
                   className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs"
                   readOnly
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1 text-xs">销售区域</label>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">{t('productDemo.basicInfo.salesRegion')}</label>
                 <select className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs">
-                  <option>全球</option>
+                  <option>{t('productDemo.basicInfo.values.global')}</option>
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1 text-xs">适配法规</label>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">{t('productDemo.basicInfo.regulation')}</label>
                 <select className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs">
-                  <option>ISO 14040/14067</option>
+                  <option>{t('productDemo.basicInfo.values.iso14040')}</option>
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1 text-xs">数据收集周期</label>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">{t('productDemo.basicInfo.dataCollection')}</label>
                 <input 
                   type="text" 
-                  value="2023年度" 
+                  value={t('productDemo.basicInfo.values.year2023')} 
                   className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs"
                   readOnly
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1 text-xs">生命周期范围</label>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">{t('productDemo.basicInfo.lifecycleScope')}</label>
                 <select className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs">
-                  <option>摇篮到坟墓</option>
+                  <option>{t('productDemo.basicInfo.values.cradleToGrave')}</option>
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1 text-xs">披露等级</label>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">{t('productDemo.basicInfo.disclosureLevel')}</label>
                 <select className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs">
-                  <option>认证级</option>
+                  <option>{t('productDemo.basicInfo.values.certified')}</option>
                 </select>
               </div>
             </div>
@@ -354,7 +304,7 @@ const ProductDemo = () => {
 
           {/* 产品碳足迹生命周期分析 */}
           <div className="flex-1 p-4">
-            <h4 className="text-emerald-400 font-medium text-sm mb-3">产品碳足迹生命周期分析</h4>
+            <h4 className="text-emerald-400 font-medium text-sm mb-3">{t('productDemo.lifecycle.title')}</h4>
             
             {/* 生命周期标签页 */}
             <div className="flex space-x-1 mb-3">
@@ -376,7 +326,7 @@ const ProductDemo = () => {
             {/* 标签页内容 */}
             <div className="bg-gray-800 rounded-lg p-3 h-full overflow-y-auto relative">
               {/* BOM动画效果 */}
-              {showBomAnimation && activeTab === '原材料获取' && (
+              {showBomAnimation && activeTab === t('productDemo.lifecycle.stages.rawMaterials') && (
                 <div className="absolute inset-0 bg-emerald-600/20 rounded-lg flex items-center justify-center z-10 animate-pulse">
                   <div className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
                     📊 BOM表格上传中...
@@ -384,23 +334,23 @@ const ProductDemo = () => {
                 </div>
               )}
               
-              {activeTab === '原材料获取' && (
+              {activeTab === t('productDemo.lifecycle.stages.rawMaterials') && (
                 <div>
-                  <h5 className="text-white font-medium text-xs mb-2">原材料获取阶段</h5>
+                  <h5 className="text-white font-medium text-xs mb-2">{t('productDemo.lifecycle.stages.rawMaterials')}</h5>
                   <div className="mb-3">
-                    <h6 className="text-emerald-400 text-xs font-medium mb-2">BOM信息</h6>
+                    <h6 className="text-emerald-400 text-xs font-medium mb-2">{t('productDemo.lifecycle.bomInfo.title')}</h6>
                     <div className="overflow-x-auto">
                       <table className="w-full text-xs">
                         <thead>
                           <tr className="border-b border-gray-600">
-                            <th className="text-left py-1 text-gray-400 text-xs">材料名称</th>
-                            <th className="text-left py-1 text-gray-400 text-xs">描述</th>
-                            <th className="text-left py-1 text-gray-400 text-xs">重量</th>
-                            <th className="text-left py-1 text-gray-400 text-xs">使用量</th>
-                            <th className="text-left py-1 text-gray-400 text-xs">单位</th>
-                            <th className="text-left py-1 text-gray-400 text-xs">排放因子</th>
-                            <th className="text-left py-1 text-gray-400 text-xs">因子来源</th>
-                            <th className="text-left py-1 text-gray-400 text-xs">置信度</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">{t('productDemo.lifecycle.bomInfo.materialName')}</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">{t('productDemo.lifecycle.bomInfo.description')}</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">{t('productDemo.lifecycle.bomInfo.weight')}</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">{t('productDemo.lifecycle.bomInfo.usage')}</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">{t('productDemo.lifecycle.bomInfo.unit')}</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">{t('productDemo.lifecycle.bomInfo.emissionFactor')}</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">{t('productDemo.lifecycle.bomInfo.source')}</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">{t('productDemo.lifecycle.bomInfo.confidence')}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -423,9 +373,9 @@ const ProductDemo = () => {
                 </div>
               )}
               
-              {activeTab === '生产制造' && (
+              {activeTab === t('productDemo.lifecycle.stages.manufacturing') && (
                 <div>
-                  <h5 className="text-white font-medium text-xs mb-2">生产制造阶段</h5>
+                  <h5 className="text-white font-medium text-xs mb-2">{t('productDemo.lifecycle.stages.manufacturing')}</h5>
                   <div className="space-y-2">
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
@@ -471,9 +421,9 @@ const ProductDemo = () => {
                 </div>
               )}
 
-              {activeTab === '运输配送' && (
+              {activeTab === t('productDemo.lifecycle.stages.transportation') && (
                 <div>
-                  <h5 className="text-white font-medium text-xs mb-2">运输配送阶段</h5>
+                  <h5 className="text-white font-medium text-xs mb-2">{t('productDemo.lifecycle.stages.transportation')}</h5>
                   <div className="space-y-2">
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
@@ -519,9 +469,9 @@ const ProductDemo = () => {
                 </div>
               )}
 
-              {activeTab === '使用阶段' && (
+              {activeTab === t('productDemo.lifecycle.stages.usage') && (
                 <div>
-                  <h5 className="text-white font-medium text-xs mb-2">使用阶段</h5>
+                  <h5 className="text-white font-medium text-xs mb-2">{t('productDemo.lifecycle.stages.usage')}</h5>
                   <div className="space-y-2">
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
@@ -567,9 +517,9 @@ const ProductDemo = () => {
                 </div>
               )}
 
-              {activeTab === '废弃处理' && (
+              {activeTab === t('productDemo.lifecycle.stages.disposal') && (
                 <div>
-                  <h5 className="text-white font-medium text-xs mb-2">废弃处理阶段</h5>
+                  <h5 className="text-white font-medium text-xs mb-2">{t('productDemo.lifecycle.stages.disposal')}</h5>
                   <div className="space-y-2">
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
@@ -622,7 +572,7 @@ const ProductDemo = () => {
         <div className="w-80 bg-gray-800 border-l border-gray-700 flex flex-col h-full">
           <div className="p-4 border-b border-gray-700">
             <h4 className="text-emerald-400 font-medium text-sm flex items-center">
-              💬 Climate Seal AI
+              💬 {t('productDemo.aiChat.title')}
             </h4>
           </div>
           
@@ -655,7 +605,7 @@ const ProductDemo = () => {
               <div className="flex space-x-2">
                 <input 
                   type="text" 
-                  placeholder="输入消息..." 
+                  placeholder={t('productDemo.aiChat.inputPlaceholder')} 
                   className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm"
                   disabled
                 />
@@ -671,7 +621,7 @@ const ProductDemo = () => {
             <div className="flex space-x-2">
               <input 
                 type="text" 
-                placeholder="输入消息..." 
+                placeholder={t('productDemo.aiChat.inputPlaceholder')} 
                 className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm"
                 disabled
               />
