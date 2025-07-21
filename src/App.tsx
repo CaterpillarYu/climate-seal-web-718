@@ -33,13 +33,27 @@ function App() {
   );
 }
 
-function AppContent({ showTrial1, setShowTrial1, showTrial2, setShowTrial2, showPricing, setShowPricing }: {
+interface AppContentProps {
   showTrial1: boolean;
   setShowTrial1: (show: boolean) => void;
   showTrial2: boolean;
   setShowTrial2: (show: boolean) => void;
   showPricing: boolean;
   setShowPricing: (show: boolean) => void;
+  showTrialModal: boolean;
+  setShowTrialModal: (show: boolean) => void;
+}
+
+function AppContent({ 
+  showTrial1, 
+  setShowTrial1, 
+  showTrial2, 
+  setShowTrial2, 
+  showPricing, 
+  setShowPricing,
+  showTrialModal,
+  setShowTrialModal
+}: AppContentProps) {
   const goHome = () => {
     setShowTrial1(false);
     setShowTrial2(false);
@@ -60,6 +74,7 @@ function AppContent({ showTrial1, setShowTrial1, showTrial2, setShowTrial2, show
   const handleStartTrial = () => {
     setShowTrialModal(true);
   };
+
   if (showTrial1) {
     return <ProductTrial1 onBack={goHome} />;
   }
@@ -93,6 +108,5 @@ function AppContent({ showTrial1, setShowTrial1, showTrial2, setShowTrial2, show
     </div>
   );
 }
-)
 
 export default App;
