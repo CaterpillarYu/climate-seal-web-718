@@ -34,6 +34,12 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
     marketingConsent: false
   });
 
+  // 验证步骤1是否完整
+  const isStep1Valid = formData.firstName.trim() !== '' && 
+                       formData.lastName.trim() !== '' && 
+                       formData.email.trim() !== '' && 
+                       formData.phone.trim() !== '' && 
+                       formData.position.trim() !== '';
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -109,7 +115,7 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    姓名 <span className="text-red-500">*</span>
+                    姓名 <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="text"
@@ -123,7 +129,7 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    姓氏 <span className="text-red-500">*</span>
+                    姓氏 <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="text"
@@ -139,7 +145,7 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    企业邮箱 <span className="text-red-500">*</span>
+                    企业邮箱 <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="email"
@@ -153,7 +159,7 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    手机号码 <span className="text-red-500">*</span>
+                    手机号码 <span className="text-red-600">*</span>
                   </label>
                   <input
                     type="tel"
@@ -168,7 +174,7 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  职位 <span className="text-red-500">*</span>
+                  职位 <span className="text-red-600">*</span>
                 </label>
                 <select
                   value={formData.position}
@@ -425,7 +431,12 @@ const TrialRegistrationModal: React.FC<TrialRegistrationModalProps> = ({ isOpen,
             {currentStep < 4 ? (
               <button
                 onClick={nextStep}
-                className="px-6 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors flex items-center"
+                disabled={currentStep === 1 && !isStep1Valid}
+                className={`px-6 py-2 rounded-lg transition-colors flex items-center ${
+                  currentStep === 1 && !isStep1Valid
+                    ? 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                    : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                }`}
               >
                 下一步
                 <ArrowRight className="h-4 w-4 ml-2" />
