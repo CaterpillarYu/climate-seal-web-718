@@ -40,9 +40,6 @@ function AppContent({ showTrial1, setShowTrial1, showTrial2, setShowTrial2, show
   setShowTrial2: (show: boolean) => void;
   showPricing: boolean;
   setShowPricing: (show: boolean) => void;
-  showTrialModal: boolean;
-  setShowTrialModal: (show: boolean) => void;
-}) {
   const goHome = () => {
     setShowTrial1(false);
     setShowTrial2(false);
