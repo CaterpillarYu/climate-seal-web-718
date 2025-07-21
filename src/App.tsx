@@ -93,5 +93,6 @@ function AppContent({ showTrial1, setShowTrial1, showTrial2, setShowTrial2, show
     </div>
   );
 }
+)
 
 export default App;
