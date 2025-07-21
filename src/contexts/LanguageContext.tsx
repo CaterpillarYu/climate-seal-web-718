@@ -850,24 +850,7 @@ const translations: Record<string, Translations> = {
     about: {
       title: 'About Us',
       subtitle: 'Committed to advancing global carbon neutrality',
-      description: 'Climate Seal AI is a technology company focused on carbon footprint calculation and environmental data analysis. Through advanced artificial intelligence technology, we provide enterprises with accurate and efficient carbon footprint calculation solutions.',
-      mission: {
-        title: 'Our Mission',
-        description: 'Through technological innovation, make carbon footprint calculation simple, accurate, and affordable, helping the world achieve carbon neutrality goals.'
-      },
-      vision: {
-        title: 'Our Vision',
-        description: 'To become the world\'s leading carbon footprint calculation platform, contributing to sustainable development.'
-      },
-      values: {
-        title: 'Our Values',
-        items: [
-          'Technological Innovation',
-          'Environmental Responsibility',
-          'Customer First',
-          'Integrity and Transparency'
-        ]
-      }
+      description: 'We believe that through technological innovation, carbon footprint calculation can be made simple, accurate, and affordable, helping achieve global carbon neutrality goals.'
     },
     contact: {
       title: 'Contact Us',
