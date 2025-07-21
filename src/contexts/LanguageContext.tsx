@@ -849,7 +849,7 @@ const translations: Record<string, Translations> = {
     },
     about: {
       title: 'About Us',
-      subtitle: 'Committed to advancing global carbon neutrality',
+      subtitle: 'Committed to promoting global carbon neutrality process',
       description: 'We believe that through technological innovation, carbon footprint calculation can be made simple, accurate, and affordable, helping achieve global carbon neutrality goals.'
     },
     contact: {
