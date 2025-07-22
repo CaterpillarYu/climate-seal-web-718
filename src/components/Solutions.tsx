@@ -33,6 +33,33 @@ const Solutions: React.FC<SolutionsProps> = ({ onStartTrial }) => {
     debugTranslations();
   }, []);
 
+  const solutions = [
+    {
+      icon: <DollarSign className="h-8 w-8 text-emerald-600" />,
+      title: t('solutions.cutCosts.title'),
+      description: t('solutions.cutCosts.description'),
+      features: [t('solutions.cutCosts.feature')]
+    },
+    {
+      icon: <Shield className="h-8 w-8 text-emerald-600" />,
+      title: t('solutions.credibility.title'),
+      description: t('solutions.credibility.description'),
+      features: [t('solutions.credibility.feature')]
+    },
+    {
+      icon: <TrendingUp className="h-8 w-8 text-emerald-600" />,
+      title: t('solutions.scale.title'),
+      description: t('solutions.scale.description'),
+      features: [t('solutions.scale.feature')]
+    },
+    {
+      icon: <Users className="h-8 w-8 text-emerald-600" />,
+      title: t('solutions.support.title'),
+      description: t('solutions.support.description'),
+      features: [t('solutions.support.feature1'), t('solutions.support.feature2'), t('solutions.support.feature3')]
+    }
+  ];
+
   // 检测是否在Solutions部分
   useEffect(() => {
     const handleScroll = () => {
@@ -86,33 +113,6 @@ const Solutions: React.FC<SolutionsProps> = ({ onStartTrial }) => {
     };
   }, [isDragging, dragOffset]);
 
-  const solutions = [
-    {
-      icon: <DollarSign className="h-8 w-8 text-emerald-600" />,
-      title: t('solutions.cutCosts.title'),
-      description: t('solutions.cutCosts.description'),
-      features: [t('solutions.cutCosts.feature')]
-    },
-    {
-      icon: <Shield className="h-8 w-8 text-emerald-600" />,
-      title: t('solutions.credibility.title'),
-      description: t('solutions.credibility.description'),
-      features: [t('solutions.credibility.feature')]
-    },
-    {
-      icon: <TrendingUp className="h-8 w-8 text-emerald-600" />,
-      title: t('solutions.scale.title'),
-      description: t('solutions.scale.description'),
-      features: [t('solutions.scale.feature')]
-    },
-    {
-      icon: <Users className="h-8 w-8 text-emerald-600" />,
-      title: t('solutions.support.title'),
-      description: t('solutions.support.description'),
-      features: [t('solutions.support.feature1'), t('solutions.support.feature2'), t('solutions.support.feature3')]
-    }
-  ];
-
   return (
     <section id="solutions" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -127,6 +127,31 @@ const Solutions: React.FC<SolutionsProps> = ({ onStartTrial }) => {
           <div className="bg-gray-50 rounded-2xl p-4">
             <ProductDemo />
           </div>
+        </div>
+        
+        {/* Solutions Grid - 恢复原有的解决方案网格 */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+          {solutions.map((solution, index) => (
+            <div key={index} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-gray-100">
+              <div className="mb-4">
+                {solution.icon}
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                {solution.title}
+              </h3>
+              <p className="text-gray-600 mb-4">
+                {solution.description}
+              </p>
+              <ul className="space-y-2">
+                {solution.features.map((feature, featureIndex) => (
+                  <li key={featureIndex} className="text-sm text-gray-700 flex items-start">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full mr-2 mt-2 flex-shrink-0"></div>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
         
         {/* 第一部分：核心功能介绍 */}
