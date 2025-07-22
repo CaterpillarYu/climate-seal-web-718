@@ -30,6 +30,9 @@ const Solutions: React.FC<SolutionsProps> = ({ onStartTrial }) => {
 
   // 在组件加载时调试
   useEffect(() => {
+    debugTranslations();
+  }, []);
+
   // 检测是否在Solutions部分
   useEffect(() => {
     const handleScroll = () => {
