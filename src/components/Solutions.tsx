@@ -21,6 +21,15 @@ const Solutions: React.FC<SolutionsProps> = ({ onStartTrial }) => {
     return Array.isArray(result) ? result : [];
   };
 
+  // 调试函数 - 检查翻译数据
+  const debugTranslations = () => {
+    console.log('Automation features:', getTranslationArray('solutions.coreFeatures.automation.features'));
+    console.log('Credibility features:', getTranslationArray('solutions.coreFeatures.credibility.features'));
+    console.log('Time investment traditional details:', getTranslationArray('solutions.valueComparison.timeInvestment.traditional.details'));
+  };
+
+  // 在组件加载时调试
+  useEffect(() => {
   // 检测是否在Solutions部分
   useEffect(() => {
     const handleScroll = () => {
