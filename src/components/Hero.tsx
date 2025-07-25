@@ -16,7 +16,7 @@ const Hero: React.FC<HeroProps> = ({ onStartCalculator, onViewPricing }) => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('/ChatGPT Image 2025年6月26日 21_44_09.png')`
+          backgroundImage: `url('/dd8e20ece7a609594344c6148b52007d(1).jpeg')`
         }}
       >
         {/* Dark overlay for better text readability */}
