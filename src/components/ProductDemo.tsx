@@ -38,13 +38,6 @@ const ProductDemo = () => {
     { name: 'Data Quality Uncertainty', value: '10%' }
   ];
 
-  const riskMetrics = [
-    { name: 'Parameter Uncertainty', value: '15%' },
-    { name: 'Model Uncertainty', value: '12%' },
-    { name: 'Scenario Uncertainty', value: '18%' },
-    { name: 'Data Quality Uncertainty', value: '10%' }
-  ];
-
   const bomData = [
     { material: 'Aluminum Alloy', desc: 'Housing Material', weight: '45g', usage: '1', unit: 'pcs', factor: '8.24', source: 'Ecoinvent', confidence: '92%' },
     { material: 'Lithium Battery', desc: 'Power Component', weight: '28g', usage: '1', unit: 'pcs', factor: '12.6', source: 'Ecoinvent', confidence: '94%' },
