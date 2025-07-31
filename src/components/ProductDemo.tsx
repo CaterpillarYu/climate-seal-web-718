@@ -28,10 +28,6 @@ const ProductDemo = () => {
   ];
 
   const qualityMetrics = [
-    { name: t('productDemo.riskAssessment.metrics.precision'), score: '87%' }
-  ];
-
-  const riskMetrics = [
     { name: 'Parameter Uncertainty', value: '15%' },
     { name: 'Model Uncertainty', value: '12%' },
     { name: 'Scenario Uncertainty', value: '18%' },
