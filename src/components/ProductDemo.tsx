@@ -38,6 +38,13 @@ const ProductDemo = () => {
     { name: 'Data Quality Uncertainty', value: '10%' }
   ];
 
+  const riskMetrics = [
+    { name: 'Parameter Uncertainty', value: '15%' },
+    { name: 'Model Uncertainty', value: '12%' },
+    { name: 'Scenario Uncertainty', value: '18%' },
+    { name: 'Data Quality Uncertainty', value: '10%' }
+  ];
+
   const bomData = [
     { material: 'Aluminum Alloy', desc: 'Housing Material', weight: '45g', usage: '1', unit: 'pcs', factor: '8.24', source: 'Ecoinvent', confidence: '92%' },
     { material: 'Lithium Battery', desc: 'Power Component', weight: '28g', usage: '1', unit: 'pcs', factor: '12.6', source: 'Ecoinvent', confidence: '94%' },
@@ -630,21 +637,6 @@ const ProductDemo = () => {
                   <Send className="h-4 w-4" />
                 </button>
               </div>
-            </div>
-          </div>
-          
-          {/* Chat input area */}
-          <div className="p-3 border-t border-gray-700">
-            <div className="flex space-x-2">
-              <input 
-                type="text" 
-                placeholder="Type message..." 
-                className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm"
-                disabled
-              />
-              <button className="px-3 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors">
-                <Send className="h-4 w-4" />
-              </button>
             </div>
           </div>
         </div>
