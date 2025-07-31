@@ -28,10 +28,6 @@ const ProductDemo = () => {
   ];
 
   const qualityMetrics = [
-    { name: 'Temporal Relevance', score: '88%' },
-    { name: 'Geographical Relevance', score: '85%' },
-    { name: 'Technological Relevance', score: '90%' },
-    { name: 'Precision Uncertainty', score: '87%' }
     { name: t('productDemo.riskAssessment.metrics.precision'), score: '87%' }
   ];
 
