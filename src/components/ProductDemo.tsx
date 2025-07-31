@@ -19,69 +19,74 @@ const ProductDemo = () => {
   };
 
   const workStages = [
-    { name: 'Requirements Research', status: 'completed', icon: '✓' },
-    { name: 'Regulation Matching', status: 'completed', icon: '✓' },
-    { name: 'Data Collection', status: workStageIndex >= 2 ? (workStageIndex === 2 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 2 ? (workStageIndex === 2 ? '⏳' : '✓') : '○' },
-    { name: 'Calculation', status: workStageIndex >= 3 ? (workStageIndex === 3 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 3 ? (workStageIndex === 3 ? '⏳' : '✓') : '○' },
-    { name: 'Risk Analysis', status: workStageIndex >= 4 ? (workStageIndex === 4 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 4 ? (workStageIndex === 4 ? '⏳' : '✓') : '○' },
-    { name: 'Report', status: workStageIndex >= 5 ? (workStageIndex === 5 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 5 ? (workStageIndex === 5 ? '⏳' : '✓') : '○' }
+    { name: '需求调研', status: 'completed', icon: '✓' },
+    { name: '法规匹配', status: 'completed', icon: '✓' },
+    { name: '数据收集', status: workStageIndex >= 2 ? (workStageIndex === 2 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 2 ? (workStageIndex === 2 ? '⏳' : '✓') : '○' },
+    { name: '计算', status: workStageIndex >= 3 ? (workStageIndex === 3 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 3 ? (workStageIndex === 3 ? '⏳' : '✓') : '○' },
+    { name: '风险分析', status: workStageIndex >= 4 ? (workStageIndex === 4 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 4 ? (workStageIndex === 4 ? '⏳' : '✓') : '○' },
+    { name: '报告', status: workStageIndex >= 5 ? (workStageIndex === 5 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 5 ? (workStageIndex === 5 ? '⏳' : '✓') : '○' }
   ];
 
-  const qualityMetrics = [
-    { material: 'Lithium Battery', desc: 'Power Component', weight: '28g', usage: '1', unit: 'pcs', factor: '12.6', source: 'Ecoinvent', confidence: '94%' },
-    { material: 'Glass', desc: 'Screen Material', weight: '15g', usage: '1', unit: 'pcs', factor: '1.35', source: 'Ecoinvent', confidence: '91%' },
-    { material: 'ABS Plastic', desc: 'Internal Components', weight: '12g', usage: '1', unit: 'pcs', factor: '3.2', source: 'Ecoinvent', confidence: '93%' },
-    { material: 'Rare Earth Elements', desc: 'Electronic Components', weight: '2g', usage: '1', unit: 'pcs', factor: '45.8', source: 'Ecoinvent', confidence: '90%' },
-    { material: 'Silver', desc: 'Circuit Connection', weight: '0.5g', usage: '1', unit: 'pcs', factor: '28.4', source: 'Ecoinvent', confidence: '97%' },
-    { material: 'Polymer Film', desc: 'Screen Protection', weight: '2g', usage: '1', unit: 'pcs', factor: '5.3', source: 'Ecoinvent', confidence: '88%' }
+  const bomData = [
+    { material: '铝合金', desc: '外壳材料', weight: '45g', usage: '1', unit: 'pcs', factor: '8.24', source: 'Ecoinvent', confidence: '92%' },
+    { material: '锂电池', desc: '电源组件', weight: '28g', usage: '1', unit: 'pcs', factor: '12.6', source: 'Ecoinvent', confidence: '94%' },
+    { material: '玻璃', desc: '屏幕材料', weight: '15g', usage: '1', unit: 'pcs', factor: '1.35', source: 'Ecoinvent', confidence: '91%' },
+    { material: '塑料ABS', desc: '内部组件', weight: '12g', usage: '1', unit: 'pcs', factor: '3.2', source: 'Ecoinvent', confidence: '93%' },
+    { material: '稀土元素', desc: '电子元件', weight: '2g', usage: '1', unit: 'pcs', factor: '45.8', source: 'Ecoinvent', confidence: '90%' },
+    { material: '铜', desc: '导线材料', weight: '8g', usage: '1', unit: 'pcs', factor: '4.1', source: 'Ecoinvent', confidence: '95%' },
+    { material: '硅芯片', desc: '处理器芯片', weight: '3g', usage: '1', unit: 'pcs', factor: '15.2', source: 'Ecoinvent', confidence: '96%' },
+    { material: '钢材', desc: '内部框架', weight: '18g', usage: '1', unit: 'pcs', factor: '2.8', source: 'Ecoinvent', confidence: '94%' },
+    { material: '陶瓷', desc: '电容器材料', weight: '4g', usage: '1', unit: 'pcs', factor: '6.7', source: 'Ecoinvent', confidence: '89%' },
+    { material: '银', desc: '电路连接', weight: '0.5g', usage: '1', unit: 'pcs', factor: '28.4', source: 'Ecoinvent', confidence: '97%' },
+    { material: '聚合物薄膜', desc: '屏幕保护层', weight: '2g', usage: '1', unit: 'pcs', factor: '5.3', source: 'Ecoinvent', confidence: '88%' }
   ];
 
   const dataQualityMetrics = [
-    { name: 'Raw Materials', score: '92' },
-    { name: 'Manufacturing', score: '88' },
-    { name: 'Transportation', score: '85' },
-    { name: 'Usage Phase', score: '90' },
-    { name: 'End of Life', score: '82' }
+    { name: '数据完整性', score: '92%' },
+    { name: '时间相关性', score: '88%' },
+    { name: '地理相关性', score: '85%' },
+    { name: '技术相关性', score: '90%' },
+    { name: '精度不确定性', score: '87%' }
   ];
 
   const riskMetrics = [
-    { name: 'Data Completeness', value: '±8%' },
-    { name: 'Precision Uncertainty', value: '±12%' },
-    { name: 'Temporal Variation', value: '±6%' },
-    { name: 'Geographic Variation', value: '±10%' }
+    { name: '参数不确定性', value: '15%' },
+    { name: '模型不确定性', value: '12%' },
+    { name: '情景不确定性', value: '18%' },
+    { name: '数据质量不确定性', value: '10%' }
   ];
 
   // Get chat messages from translation
   const chatMessages = [
     {
       type: 'ai',
-      content: 'Hello! I am the Climate Seal AI assistant. I have matched the applicable regulatory standards for your product: ISO 14040/14067. Next, we need to enter the data collection phase.'
+      content: '您好！我是Climate Seal AI助手。我已经根据您的产品基础信息为您匹配了适用的法规标准：ISO 14040/14067。接下来我们要进入数据收集阶段。'
     },
     {
       type: 'user',
-      content: 'Please continue.'
+      content: '请你继续。'
     },
     {
       type: 'ai',
-      content: 'Great! We need you to provide raw material information. If you have a BOM table to upload, this will be very helpful for carbon emission accounting.'
+      content: '好的，我们需要您提供原材料的相关信息，如果您有BOM表格并上传，这对于碳排放的核算有非常大的帮助。'
     },
     {
       type: 'user',
-      content: 'BOM table uploaded'
+      content: '已上传BOM表格'
     },
     {
       type: 'ai',
-      content: 'Received your BOM table with high completeness. We will continue with manufacturing phase data collection, then I will perform calculations for you.'
+      content: '收到您的BOM表格，完整度很高，我们将继续完成生产制造阶段的一些信息采集，然后我将为你执行计算，可以吗'
     }
   ].map((msg: any, index: number) => ({
     ...msg,
-    stage: 'Raw Materials',
+    stage: '原材料获取',
     delay: 1000 + index * 500,
     ...(index === 2 && { triggerBom: true }),
-    ...(index === 4 && { triggerStageChange: 'Manufacturing' }),
-    ...(index === 6 && { triggerStageChange: 'Transportation', triggerWorkStage: 3 }),
-    ...(index === 7 && { triggerStageChange: 'Usage Phase' }),
-    ...(index === 8 && { triggerStageChange: 'End of Life', triggerWorkStage: 4 }),
+    ...(index === 4 && { triggerStageChange: '生产制造' }),
+    ...(index === 6 && { triggerStageChange: '运输配送', triggerWorkStage: 3 }),
+    ...(index === 7 && { triggerStageChange: '使用阶段' }),
+    ...(index === 8 && { triggerStageChange: '废弃处理', triggerWorkStage: 4 }),
     ...(index === 9 && { triggerWorkStage: 5 }),
     ...(index === 10 && { triggerWorkStage: 6 })
   }));
@@ -129,7 +134,7 @@ const ProductDemo = () => {
   const resetDemo = () => {
     setCurrentMessageIndex(0);
     setDisplayedMessages([]);
-    setActiveTab('Raw Materials');
+    setActiveTab('原材料获取');
     setWorkStageIndex(2);
     setShowBomAnimation(false);
     setIsAutoPlaying(true);
@@ -148,11 +153,11 @@ const ProductDemo = () => {
   };
 
   const lifecycleTabs = [
-    'Raw Materials',
-    'Manufacturing',
-    'Transportation',
-    'Usage Phase',
-    'End of Life'
+    '原材料获取',
+    '生产制造',
+    '运输配送',
+    '使用阶段',
+    '废弃处理'
   ];
 
   return (
@@ -160,7 +165,7 @@ const ProductDemo = () => {
       {/* Header */}
       <div className="bg-gray-800 px-6 py-4 border-b border-gray-700">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold">Climate Seal AI - Product Carbon Footprint Platform (Demo)</h3>
+          <h3 className="text-lg font-semibold">产品碳足迹平台</h3>
           
           {/* 演示控制按钮 */}
           <div className="flex space-x-2">
@@ -172,7 +177,7 @@ const ProductDemo = () => {
                   : 'bg-gray-600 text-white hover:bg-gray-700'
               }`}
             >
-              {isLooping ? 'Loop Mode' : 'Single Mode'}
+              {isLooping ? '循环模式' : '单次模式'}
             </button>
             <button
               onClick={toggleAutoPlay}
@@ -182,13 +187,13 @@ const ProductDemo = () => {
                   : 'bg-green-600 text-white hover:bg-green-700'
               }`}
             >
-              {isAutoPlaying ? 'Pause Demo' : 'Continue Demo'}
+              {isAutoPlaying ? '暂停演示' : '继续演示'}
             </button>
             <button
               onClick={resetDemo}
               className="px-3 py-1 text-xs bg-gray-600 text-white rounded hover:bg-gray-700"
             >
-              Restart
+              重新开始
             </button>
           </div>
         </div>
@@ -200,7 +205,7 @@ const ProductDemo = () => {
         <div className="w-64 bg-gray-800 border-r border-gray-700 flex flex-col">
           {/* 工作阶段 */}
           <div className="p-4 border-b border-gray-700">
-            <h4 className="text-emerald-400 font-medium text-sm mb-3">Work Stages</h4>
+            <h4 className="text-emerald-400 font-medium text-sm mb-3">工作阶段</h4>
             <div className="space-y-2">
               {workStages.map((stage, index) => (
                 <div key={index} className="flex items-center space-x-2">
@@ -225,11 +230,11 @@ const ProductDemo = () => {
 
           {/* 风险评估与质量评分 */}
           <div className="flex-1 p-3 overflow-y-auto">
-            <h4 className="text-emerald-400 font-medium text-sm mb-3">Risk Assessment & Quality Scoring</h4>
+            <h4 className="text-emerald-400 font-medium text-sm mb-3">风险评估与质量评分</h4>
             
             {/* 数据质量评分 */}
             <div className="mb-4">
-              <h5 className="text-white font-medium text-xs mb-2">Data Quality Score</h5>
+              <h5 className="text-white font-medium text-xs mb-2">数据质量评分</h5>
               <div className="space-y-1">
                 {dataQualityMetrics.map((metric, index) => (
                   <div key={index} className="flex justify-between text-xs">
@@ -240,15 +245,15 @@ const ProductDemo = () => {
               </div>
               <div className="mt-2 pt-2 border-t border-gray-600">
                 <div className="flex justify-between">
-                  <span className="text-white font-medium text-xs">Overall Quality Score</span>
-                  <span className="text-emerald-400 font-bold text-sm">88</span>
+                  <span className="text-white font-medium text-xs">综合质量评分</span>
+                  <span className="text-emerald-400 font-bold text-sm">88分</span>
                 </div>
               </div>
             </div>
 
             {/* 不确定性风险 */}
             <div>
-              <h5 className="text-white font-medium text-xs mb-2">Uncertainty Risk</h5>
+              <h5 className="text-white font-medium text-xs mb-2">不确定性风险</h5>
               <div className="space-y-1">
                 {riskMetrics.map((metric, index) => (
                   <div key={index} className="flex justify-between text-xs">
@@ -259,8 +264,8 @@ const ProductDemo = () => {
               </div>
               <div className="mt-2 pt-2 border-t border-gray-600">
                 <div className="flex justify-between">
-                  <span className="text-white font-medium text-xs">Overall Risk Level</span>
-                  <span className="text-yellow-400 font-bold text-xs">Medium</span>
+                  <span className="text-white font-medium text-xs">综合风险等级</span>
+                  <span className="text-yellow-400 font-bold text-xs">中等</span>
                 </div>
               </div>
             </div>
@@ -271,48 +276,48 @@ const ProductDemo = () => {
         <div className="flex-1 flex flex-col bg-gray-900">
           {/* 基础信息 */}
           <div className="p-6 border-b border-gray-700 bg-gray-800">
-            <h4 className="text-emerald-400 font-medium text-sm mb-3">Basic Information</h4>
+            <h4 className="text-emerald-400 font-medium text-sm mb-3">基础信息</h4>
             <div className="grid grid-cols-3 gap-3">
               <div>
-                <label className="block text-xs text-gray-400 mb-1 text-xs">Product Name</label>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">产品名称</label>
                 <input 
                   type="text" 
-                  value="Smartphone" 
+                  value="智能手机" 
                   className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs"
                   readOnly
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1 text-xs">Sales Region</label>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">销售区域</label>
                 <select className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs">
-                  <option>Global</option>
+                  <option>全球</option>
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1 text-xs">Applicable Regulation</label>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">适配法规</label>
                 <select className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs">
                   <option>ISO 14040/14067</option>
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1 text-xs">Data Collection Period</label>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">数据收集周期</label>
                 <input 
                   type="text" 
-                  value="2023 Annual" 
+                  value="2023年度" 
                   className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs"
                   readOnly
                 />
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1 text-xs">Lifecycle Scope</label>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">生命周期范围</label>
                 <select className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs">
-                  <option>Cradle to Grave</option>
+                  <option>摇篮到坟墓</option>
                 </select>
               </div>
               <div>
-                <label className="block text-xs text-gray-400 mb-1 text-xs">Disclosure Level</label>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">披露等级</label>
                 <select className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs">
-                  <option>Certified Level</option>
+                  <option>认证级</option>
                 </select>
               </div>
             </div>
@@ -320,7 +325,7 @@ const ProductDemo = () => {
 
           {/* 产品碳足迹生命周期分析 */}
           <div className="flex-1 p-4">
-            <h4 className="text-emerald-400 font-medium text-sm mb-3">Product Carbon Footprint Lifecycle Analysis</h4>
+            <h4 className="text-emerald-400 font-medium text-sm mb-3">产品碳足迹生命周期分析</h4>
             
             {/* 生命周期标签页 */}
             <div className="flex space-x-1 mb-3">
@@ -342,31 +347,31 @@ const ProductDemo = () => {
             {/* 标签页内容 */}
             <div className="bg-gray-800 rounded-lg p-3 h-full overflow-y-auto relative">
               {/* BOM动画效果 */}
-              {showBomAnimation && activeTab === 'Raw Materials' && (
+              {showBomAnimation && activeTab === '原材料获取' && (
                 <div className="absolute inset-0 bg-emerald-600/20 rounded-lg flex items-center justify-center z-10 animate-pulse">
                   <div className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
-                    📊 BOM Table Uploading...
+                    📊 BOM表格上传中...
                   </div>
                 </div>
               )}
               
-              {activeTab === 'Raw Materials' && (
+              {activeTab === '原材料获取' && (
                 <div>
-                  <h5 className="text-white font-medium text-xs mb-2">Raw Materials</h5>
+                  <h5 className="text-white font-medium text-xs mb-2">原材料获取</h5>
                   <div className="mb-3">
-                    <h6 className="text-emerald-400 text-xs font-medium mb-2">BOM Information</h6>
+                    <h6 className="text-emerald-400 text-xs font-medium mb-2">BOM信息</h6>
                     <div className="overflow-x-auto">
                       <table className="w-full text-xs">
                         <thead>
                           <tr className="border-b border-gray-600">
-                            <th className="text-left py-1 text-gray-400 text-xs">Material Name</th>
-                            <th className="text-left py-1 text-gray-400 text-xs">Description</th>
-                            <th className="text-left py-1 text-gray-400 text-xs">Weight</th>
-                            <th className="text-left py-1 text-gray-400 text-xs">Usage</th>
-                            <th className="text-left py-1 text-gray-400 text-xs">Unit</th>
-                            <th className="text-left py-1 text-gray-400 text-xs">Emission Factor</th>
-                            <th className="text-left py-1 text-gray-400 text-xs">Factor Source</th>
-                            <th className="text-left py-1 text-gray-400 text-xs">Confidence</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">材料名称</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">描述</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">重量</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">使用量</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">单位</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">排放因子</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">因子来源</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">置信度</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -389,47 +394,47 @@ const ProductDemo = () => {
                 </div>
               )}
               
-              {activeTab === 'Manufacturing' && (
+              {activeTab === '生产制造' && (
                 <div>
-                  <h5 className="text-white font-medium text-xs mb-2">Manufacturing</h5>
+                  <h5 className="text-white font-medium text-xs mb-2">生产制造</h5>
                   <div className="space-y-2">
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Electricity Consumption (kWh)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">电力消耗 (kWh)</label>
                         <input type="text" value="12.5" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Natural Gas (m³)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">天然气 (m³)</label>
                         <input type="text" value="2.3" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Industrial Water (L)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">工业用水 (L)</label>
                         <input type="text" value="45" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Steam Consumption (kg)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">蒸汽消耗 (kg)</label>
                         <input type="text" value="8.2" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Compressed Air (m³)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">压缩空气 (m³)</label>
                         <input type="text" value="15.6" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Wastewater Treatment (L)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">废水处理 (L)</label>
                         <input type="text" value="38" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Production Efficiency (%)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">生产效率 (%)</label>
                         <input type="text" value="92.5" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Waste Rate (%)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">废品率 (%)</label>
                         <input type="text" value="3.2" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
@@ -437,47 +442,47 @@ const ProductDemo = () => {
                 </div>
               )}
 
-              {activeTab === 'Transportation' && (
+              {activeTab === '运输配送' && (
                 <div>
-                  <h5 className="text-white font-medium text-xs mb-2">Transportation</h5>
+                  <h5 className="text-white font-medium text-xs mb-2">运输配送</h5>
                   <div className="space-y-2">
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Sea Transport Distance (km)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">海运距离 (km)</label>
                         <input type="text" value="8000" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Road Transport (km)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">公路运输 (km)</label>
                         <input type="text" value="500" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Rail Transport (km)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">铁路运输 (km)</label>
                         <input type="text" value="1200" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Air Transport (km)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">航空运输 (km)</label>
                         <input type="text" value="0" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Packaging Weight (g)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">包装重量 (g)</label>
                         <input type="text" value="85" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Load Utilization (%)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">载重利用率 (%)</label>
                         <input type="text" value="78" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Storage Time (days)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">仓储时间 (天)</label>
                         <input type="text" value="15" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Last Mile (km)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">最后一公里 (km)</label>
                         <input type="text" value="25" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
@@ -485,47 +490,47 @@ const ProductDemo = () => {
                 </div>
               )}
 
-              {activeTab === 'Usage Phase' && (
+              {activeTab === '使用阶段' && (
                 <div>
-                  <h5 className="text-white font-medium text-xs mb-2">Usage Phase</h5>
+                  <h5 className="text-white font-medium text-xs mb-2">使用阶段</h5>
                   <div className="space-y-2">
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Annual Electricity (kWh)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">年均用电量 (kWh)</label>
                         <input type="text" value="15.6" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Service Life (years)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">使用寿命 (年)</label>
                         <input type="text" value="3" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Standby Power (W)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">待机功率 (W)</label>
                         <input type="text" value="0.8" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Active Power (W)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">工作功率 (W)</label>
                         <input type="text" value="3.2" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Charging Efficiency (%)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">充电效率 (%)</label>
                         <input type="text" value="85" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Daily Usage (h)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">日均使用 (h)</label>
                         <input type="text" value="4.5" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Maintenance Frequency (times/year)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">维护频次 (次/年)</label>
                         <input type="text" value="2" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Software Updates (times/year)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">软件更新 (次/年)</label>
                         <input type="text" value="12" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
@@ -533,47 +538,47 @@ const ProductDemo = () => {
                 </div>
               )}
 
-              {activeTab === 'End of Life' && (
+              {activeTab === '废弃处理' && (
                 <div>
-                  <h5 className="text-white font-medium text-xs mb-2">End of Life</h5>
+                  <h5 className="text-white font-medium text-xs mb-2">废弃处理</h5>
                   <div className="space-y-2">
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Recycling Rate (%)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">回收率 (%)</label>
                         <input type="text" value="75" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Incineration Rate (%)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">焚烧率 (%)</label>
                         <input type="text" value="20" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Landfill Rate (%)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">填埋率 (%)</label>
                         <input type="text" value="5" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Disassembly Efficiency (%)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">拆解效率 (%)</label>
                         <input type="text" value="88" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3 mb-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Precious Metal Recovery (%)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">贵金属回收 (%)</label>
                         <input type="text" value="92" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Plastic Recovery (%)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">塑料回收 (%)</label>
                         <input type="text" value="65" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Transport to Recycling (km)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">运输到回收点 (km)</label>
                         <input type="text" value="35" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                       <div>
-                        <label className="block text-xs text-gray-400 mb-1 text-xs">Processing Energy (kWh)</label>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">处理能耗 (kWh)</label>
                         <input type="text" value="2.8" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
                       </div>
                     </div>
@@ -621,7 +626,7 @@ const ProductDemo = () => {
               <div className="flex space-x-2">
                 <input 
                   type="text" 
-                  placeholder="Type message..." 
+                  placeholder="输入消息..." 
                   className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm"
                   disabled
                 />
