@@ -631,6 +631,21 @@ const ProductDemo = () => {
                 </button>
               </div>
             </div>
+            
+            {/* Chat input area */}
+            <div className="mt-3 pt-3 border-t border-gray-700 flex-shrink-0">
+              <div className="flex space-x-2">
+                <input 
+                  type="text" 
+                  placeholder="Type message..." 
+                  className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm h-10"
+                  disabled
+                />
+                <button className="px-3 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors h-10 w-10 flex items-center justify-center">
+                  <Send className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
