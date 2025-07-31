@@ -1,19 +1,16 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { DollarSign, Shield, TrendingUp, Users } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { CheckCircle, Clock, Send } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import ProductDemo from './ProductDemo';
 
-interface SolutionsProps {
-  onStartTrial?: () => void;
-}
-
-const Solutions: React.FC<SolutionsProps> = ({ onStartTrial }) => {
+const ProductDemo = () => {
   const { t } = useLanguage();
-  const [showTrialCard, setShowTrialCard] = useState(true);
-  const [cardPosition, setCardPosition] = useState({ x: 50, y: 50 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [activeTab, setActiveTab] = useState('原材料获取');
+  const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+  const [showBomAnimation, setShowBomAnimation] = useState(false);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [displayedMessages, setDisplayedMessages] = useState([]);
+  const [workStageIndex, setWorkStageIndex] = useState(2); // 从数据收集阶段开始
+  const [isLooping, setIsLooping] = useState(true);
 
   // Helper function to get array from translation
   const getTranslationArray = (key: string): any[] => {
@@ -21,460 +18,635 @@ const Solutions: React.FC<SolutionsProps> = ({ onStartTrial }) => {
     return Array.isArray(result) ? result : [];
   };
 
-  // 调试函数 - 检查翻译数据
-  const debugTranslations = () => {
-    console.log('Automation features:', getTranslationArray('solutions.coreFeatures.automation.features'));
-    console.log('Credibility features:', getTranslationArray('solutions.coreFeatures.credibility.features'));
-    console.log('Time investment traditional details:', getTranslationArray('solutions.valueComparison.timeInvestment.traditional.details'));
-  };
-
-  // 在组件加载时调试
-  useEffect(() => {
-    debugTranslations();
-  }, []);
-
-  const solutions = [
-    {
-      icon: <DollarSign className="h-8 w-8 text-emerald-600" />,
-      title: t('solutions.cutCosts.title'),
-      description: t('solutions.cutCosts.description'),
-      features: [t('solutions.cutCosts.feature')]
-    },
-    {
-      icon: <Shield className="h-8 w-8 text-emerald-600" />,
-      title: t('solutions.credibility.title'),
-      description: t('solutions.credibility.description'),
-      features: [t('solutions.credibility.feature')]
-    },
-    {
-      icon: <TrendingUp className="h-8 w-8 text-emerald-600" />,
-      title: t('solutions.scale.title'),
-      description: t('solutions.scale.description'),
-      features: [t('solutions.scale.feature')]
-    },
-    {
-      icon: <Users className="h-8 w-8 text-emerald-600" />,
-      title: t('solutions.support.title'),
-      description: t('solutions.support.description'),
-      features: [t('solutions.support.feature1'), t('solutions.support.feature2'), t('solutions.support.feature3')]
-    }
+  const workStages = [
+    { name: 'Requirements Research', status: 'completed', icon: '✓' },
+    { name: 'Regulation Matching', status: 'completed', icon: '✓' },
+    { name: 'Data Collection', status: workStageIndex >= 2 ? (workStageIndex === 2 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 2 ? (workStageIndex === 2 ? '⏳' : '✓') : '○' },
+    { name: 'Calculation', status: workStageIndex >= 3 ? (workStageIndex === 3 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 3 ? (workStageIndex === 3 ? '⏳' : '✓') : '○' },
+    { name: 'Risk Analysis', status: workStageIndex >= 4 ? (workStageIndex === 4 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 4 ? (workStageIndex === 4 ? '⏳' : '✓') : '○' },
+    { name: 'Report', status: workStageIndex >= 5 ? (workStageIndex === 5 ? 'current' : 'completed') : 'pending', icon: workStageIndex >= 5 ? (workStageIndex === 5 ? '⏳' : '✓') : '○' }
   ];
 
-  // 检测是否在Solutions部分
+  const qualityMetrics = [
+    { name: 'Parameter Uncertainty', value: '15%' },
+    { name: 'Model Uncertainty', value: '12%' },
+    { name: 'Scenario Uncertainty', value: '18%' },
+    { name: 'Data Quality Uncertainty', value: '10%' }
+  ];
+
+  const bomData = [
+    { material: 'Aluminum Alloy', desc: 'Housing Material', weight: '45g', usage: '1', unit: 'pcs', factor: '8.24', source: 'Ecoinvent', confidence: '92%' },
+    { material: 'Lithium Battery', desc: 'Power Component', weight: '28g', usage: '1', unit: 'pcs', factor: '12.6', source: 'Ecoinvent', confidence: '94%' },
+    { material: 'Glass', desc: 'Screen Material', weight: '15g', usage: '1', unit: 'pcs', factor: '1.35', source: 'Ecoinvent', confidence: '91%' },
+    { material: 'ABS Plastic', desc: 'Internal Components', weight: '12g', usage: '1', unit: 'pcs', factor: '3.2', source: 'Ecoinvent', confidence: '93%' },
+    { material: 'Rare Earth Elements', desc: 'Electronic Components', weight: '2g', usage: '1', unit: 'pcs', factor: '45.8', source: 'Ecoinvent', confidence: '90%' },
+    { material: 'Copper', desc: 'Wire Material', weight: '8g', usage: '1', unit: 'pcs', factor: '4.1', source: 'Ecoinvent', confidence: '95%' },
+    { material: 'Silicon Chip', desc: 'Processor Chip', weight: '3g', usage: '1', unit: 'pcs', factor: '15.2', source: 'Ecoinvent', confidence: '96%' },
+    { material: 'Steel', desc: 'Internal Frame', weight: '18g', usage: '1', unit: 'pcs', factor: '2.8', source: 'Ecoinvent', confidence: '94%' },
+    { material: 'Ceramic', desc: 'Capacitor Material', weight: '4g', usage: '1', unit: 'pcs', factor: '6.7', source: 'Ecoinvent', confidence: '89%' },
+    { material: 'Silver', desc: 'Circuit Connection', weight: '0.5g', usage: '1', unit: 'pcs', factor: '28.4', source: 'Ecoinvent', confidence: '97%' },
+    { material: 'Polymer Film', desc: 'Screen Protection', weight: '2g', usage: '1', unit: 'pcs', factor: '5.3', source: 'Ecoinvent', confidence: '88%' }
+  ];
+
+  // Get chat messages from translation
+  const chatMessages = [
+    {
+      type: 'ai',
+      content: 'Hello! I am the Climate Seal AI assistant. I have matched the applicable regulatory standards for your product: ISO 14040/14067. Next, we need to enter the data collection phase.'
+    },
+    {
+      type: 'user',
+      content: 'Please continue.'
+    },
+    {
+      type: 'ai',
+      content: 'Great! We need you to provide raw material information. If you have a BOM table to upload, this will be very helpful for carbon emission accounting.'
+    },
+    {
+      type: 'user',
+      content: 'BOM table uploaded'
+    },
+    {
+      type: 'ai',
+      content: 'Received your BOM table with high completeness. We will continue with manufacturing phase data collection, then I will perform calculations for you.'
+    }
+  ].map((msg: any, index: number) => ({
+    ...msg,
+    stage: 'Raw Materials',
+    delay: 1000 + index * 500,
+    ...(index === 2 && { triggerBom: true }),
+    ...(index === 4 && { triggerStageChange: 'Manufacturing' }),
+    ...(index === 6 && { triggerStageChange: 'Transportation', triggerWorkStage: 3 }),
+    ...(index === 7 && { triggerStageChange: 'Usage Phase' }),
+    ...(index === 8 && { triggerStageChange: 'End of Life', triggerWorkStage: 4 }),
+    ...(index === 9 && { triggerWorkStage: 5 }),
+    ...(index === 10 && { triggerWorkStage: 6 })
+  }));
+
+  // 自动播放逻辑
   useEffect(() => {
-    const handleScroll = () => {
-      const solutionsElement = document.getElementById('solutions');
-      if (solutionsElement) {
-        const rect = solutionsElement.getBoundingClientRect();
-        // 更严格的检测：只有当Solutions部分在视窗中占主要位置时才显示
-        const isInView = rect.top <= 100 && rect.bottom >= window.innerHeight * 0.3;
-        setShowTrialCard(isInView);
+    if (!isAutoPlaying) return;
+
+    // 如果到达消息末尾且开启循环，重置演示
+    if (currentMessageIndex >= chatMessages.length && isLooping) {
+      const resetTimer = setTimeout(() => {
+        resetDemo();
+      }, 3000); // 等待3秒后重新开始
+      return () => clearTimeout(resetTimer);
+    }
+
+    if (currentMessageIndex >= chatMessages.length) return;
+
+    const currentMessage = chatMessages[currentMessageIndex];
+    const timer = setTimeout(() => {
+      // 添加新消息到显示列表
+      setDisplayedMessages(prev => [...prev, currentMessage]);
+      
+      // 处理特殊触发器
+      if (currentMessage.triggerBom) {
+        setShowBomAnimation(true);
+        setTimeout(() => setShowBomAnimation(false), 3000);
       }
-    };
+      
+      if (currentMessage.triggerStageChange) {
+        setActiveTab(currentMessage.triggerStageChange);
+      }
+      
+      if (currentMessage.triggerWorkStage) {
+        setWorkStageIndex(currentMessage.triggerWorkStage);
+      }
+      
+      setCurrentMessageIndex(prev => prev + 1);
+    }, currentMessage.delay);
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // 初始检查
+    return () => clearTimeout(timer);
+  }, [currentMessageIndex, isAutoPlaying, isLooping]);
 
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // 拖拽功能
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    const rect = e.currentTarget.getBoundingClientRect();
-    setDragOffset({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    });
+  // 重置演示
+  const resetDemo = () => {
+    setCurrentMessageIndex(0);
+    setDisplayedMessages([]);
+    setActiveTab('Raw Materials');
+    setWorkStageIndex(2);
+    setShowBomAnimation(false);
+    setIsAutoPlaying(true);
+    setShowBomAnimation(false);
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging) {
-      setCardPosition({
-        x: e.clientX - dragOffset.x,
-        y: e.clientY - dragOffset.y
-      });
-    }
+  // 暂停/继续演示
+  const toggleAutoPlay = () => {
+    setIsAutoPlaying(!isAutoPlaying);
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
+  // 手动点击标签页时暂停自动播放
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    setIsAutoPlaying(false);
   };
 
-  useEffect(() => {
-    if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-    }
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isDragging, dragOffset]);
+  const lifecycleTabs = [
+    'Raw Materials',
+    'Manufacturing',
+    'Transportation',
+    'Usage Phase',
+    'End of Life'
+  ];
 
   return (
-    <section id="solutions" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-4xl mx-auto mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-            {t('solutions.title')}
-          </h2>
-        </div>
-
-        {/* Product Demo Section */}
-        <div className="mb-20">
-          <div className="bg-gray-50 rounded-2xl p-4">
-            <ProductDemo />
-          </div>
-        </div>
-        
-        {/* Solutions Grid - 恢复原有的解决方案网格 */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
-          {solutions.map((solution, index) => (
-            <div key={index} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow border border-gray-100">
-              <div className="mb-4">
-                {solution.icon}
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                {solution.title}
-              </h3>
-              <p className="text-gray-600 mb-4">
-                {solution.description}
-              </p>
-              <ul className="space-y-2">
-                {solution.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="text-sm text-gray-700 flex items-start">
-                    <div className="w-2 h-2 bg-emerald-500 rounded-full mr-2 mt-2 flex-shrink-0"></div>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        
-        {/* 第一部分：核心功能介绍 */}
-        <div className="mb-20">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('solutions.coreFeatures.title')}</h2>
-          </div>
+    <div className="w-full bg-gray-900 text-white rounded-2xl overflow-hidden" style={{ height: '700px' }}>
+      {/* Header */}
+      <div className="bg-gray-800 px-6 py-4 border-b border-gray-700">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold">Climate Seal AI - Product Carbon Footprint Platform (Demo)</h3>
           
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* 全自动零门槛工具链 */}
-            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <div className="w-4 h-4 bg-emerald-600 rounded-full mr-4"></div>
-                {t('solutions.coreFeatures.automation.title')}
-              </h3>
-              <div className="space-y-3">
-                {getTranslationArray('solutions.coreFeatures.automation.features').map((feature: string, index: number) => (
-                  <div key={index} className="flex items-start group hover:bg-white/50 p-3 rounded-lg transition-colors">
-                    <div className="w-2 h-2 bg-emerald-600 rounded-full mr-4 mt-2 flex-shrink-0 group-hover:scale-125 transition-transform"></div>
-                    <span className="text-gray-700 leading-relaxed">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* 认证级的可信排放结果 */}
-            <div className="bg-gradient-to-br from-sky-50 to-sky-100 rounded-2xl p-6 hover:shadow-lg transition-all duration-300">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                <div className="w-4 h-4 bg-sky-600 rounded-full mr-4"></div>
-                {t('solutions.coreFeatures.credibility.title')}
-              </h3>
-              <div className="space-y-3">
-                {getTranslationArray('solutions.coreFeatures.credibility.features').map((feature: string, index: number) => (
-                  <div key={index} className="flex items-start group hover:bg-white/50 p-3 rounded-lg transition-colors">
-                    <div className="w-2 h-2 bg-sky-600 rounded-full mr-4 mt-2 flex-shrink-0 group-hover:scale-125 transition-transform"></div>
-                    <span className="text-gray-700 leading-relaxed">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 第二部分：价值对比分析 */}
-        <div className="mb-20">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('solutions.valueComparison.title')}</h2>
-            <p className="text-lg text-gray-600">{t('solutions.valueComparison.subtitle')}</p>
-          </div>
-          
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
-            <div className="grid md:grid-cols-3 divide-x divide-gray-200">
-              {/* 时间投入对比 */}
-              <div className="p-8">
-                <div className="text-center mb-6">
-                  <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900">{t('solutions.valueComparison.timeInvestment.title')}</h3>
-                </div>
-                
-                <div className="space-y-6">
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                    <h4 className="font-semibold text-gray-800 mb-2">{t('solutions.valueComparison.timeInvestment.traditional.title')}</h4>
-                    <p className="text-gray-700 text-sm mb-3 font-medium">{t('solutions.valueComparison.timeInvestment.traditional.duration')}</p>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                      {getTranslationArray('solutions.valueComparison.timeInvestment.traditional.details').map((detail: string, index: number) => (
-                        <li key={index} className="leading-relaxed">{detail}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div className="flex justify-center">
-                    <div className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center">
-                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                      </svg>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-                    <h4 className="font-semibold text-emerald-800 mb-2">{t('solutions.valueComparison.timeInvestment.climateSeal.title')}</h4>
-                    <p className="text-emerald-700 text-sm mb-3 font-medium">{t('solutions.valueComparison.timeInvestment.climateSeal.duration')}</p>
-                    <ul className="text-sm text-emerald-600 space-y-1">
-                      {getTranslationArray('solutions.valueComparison.timeInvestment.climateSeal.details').map((detail: string, index: number) => (
-                        <li key={index} className="leading-relaxed">{detail}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              {/* 资金投入对比 */}
-              <div className="p-8">
-                <div className="text-center mb-6">
-                  <div className="w-16 h-16 bg-sky-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900">{t('solutions.valueComparison.financialInvestment.title')}</h3>
-                </div>
-                
-                <div className="space-y-6">
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                    <h4 className="font-semibold text-gray-800 mb-2">{t('solutions.valueComparison.financialInvestment.traditional.title')}</h4>
-                    <p className="text-gray-700 text-sm mb-3 font-medium">{t('solutions.valueComparison.financialInvestment.traditional.cost')}</p>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                      {getTranslationArray('solutions.valueComparison.financialInvestment.traditional.details').map((detail: string, index: number) => (
-                        <li key={index} className="leading-relaxed">{detail}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div className="flex justify-center">
-                    <div className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center">
-                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                      </svg>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-                    <h4 className="font-semibold text-emerald-800 mb-2">{t('solutions.valueComparison.financialInvestment.climateSeal.title')}</h4>
-                    <p className="text-emerald-700 text-sm mb-3 font-medium">{t('solutions.valueComparison.financialInvestment.climateSeal.cost')}</p>
-                    <ul className="text-sm text-emerald-600 space-y-1">
-                      {getTranslationArray('solutions.valueComparison.financialInvestment.climateSeal.details').map((detail: string, index: number) => (
-                        <li key={index} className="leading-relaxed">{detail}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              {/* 销售影响对比 */}
-              <div className="p-8">
-                <div className="text-center mb-6">
-                  <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900">{t('solutions.valueComparison.salesImpact.title')}</h3>
-                </div>
-                
-                <div className="space-y-6">
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                    <h4 className="font-semibold text-gray-800 mb-2">{t('solutions.valueComparison.salesImpact.traditional.title')}</h4>
-                    <p className="text-gray-700 text-sm mb-3 font-medium">{t('solutions.valueComparison.salesImpact.traditional.impact')}</p>
-                    <ul className="text-sm text-gray-600 space-y-1">
-                      {getTranslationArray('solutions.valueComparison.salesImpact.traditional.details').map((detail: string, index: number) => (
-                        <li key={index} className="leading-relaxed">{detail}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div className="flex justify-center">
-                    <div className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center">
-                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                      </svg>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
-                    <h4 className="font-semibold text-emerald-800 mb-2">{t('solutions.valueComparison.salesImpact.climateSeal.title')}</h4>
-                    <p className="text-emerald-700 text-sm mb-3 font-medium">{t('solutions.valueComparison.salesImpact.climateSeal.impact')}</p>
-                    <ul className="text-sm text-emerald-600 space-y-1">
-                      {getTranslationArray('solutions.valueComparison.salesImpact.climateSeal.details').map((detail: string, index: number) => (
-                        <li key={index} className="leading-relaxed">{detail}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 第三部分：业务流程对比 */}
-        <div className="mb-20">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('solutions.processComparison.title')}</h2>
-            <p className="text-lg text-gray-600">{t('solutions.processComparison.subtitle')}</p>
-          </div>
-          
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* AI Agent方案 - 4步 */}
-            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 border border-emerald-200">
-              <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-emerald-800">{t('solutions.processComparison.aiAgent.title')}</h3>
-                <p className="text-sm text-emerald-600 mt-2">{t('solutions.processComparison.aiAgent.description')}</p>
-              </div>
-              
-              <div className="space-y-4">
-                {getTranslationArray('solutions.processComparison.aiAgent.steps').map((stepTitle: string, index: number) => (
-                  <div key={index}>
-                    <div className="flex items-center group">
-                      <div className="w-8 h-8 bg-emerald-600 rounded-full flex items-center justify-center text-white font-bold text-sm mr-4 group-hover:scale-110 transition-transform">{index + 1}</div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900">{stepTitle}</h4>
-                      </div>
-                    </div>
-                    {index < getTranslationArray('solutions.processComparison.aiAgent.steps').length - 1 && (
-                      <div className="flex justify-start ml-4">
-                        <div className="w-0.5 h-6 bg-emerald-300"></div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-                
-            {/* 购买软件+内部专家 - 11步 */}
-            <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 border border-amber-200">
-              <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-amber-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-amber-800">{t('solutions.processComparison.softwareExpert.title')}</h3>
-                <p className="text-sm text-amber-600 mt-2">{t('solutions.processComparison.softwareExpert.description')}</p>
-              </div>
-              
-              <div className="space-y-3 max-h-96 overflow-y-auto">
-                {getTranslationArray('solutions.processComparison.softwareExpert.steps').map((stepTitle: string, index: number) => (
-                  <div key={index}>
-                    <div className="flex items-center group">
-                      <div className="w-6 h-6 bg-amber-600 rounded-full flex items-center justify-center text-white font-bold text-xs mr-3 group-hover:scale-110 transition-transform">{index + 1}</div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 text-sm">{stepTitle}</h4>
-                      </div>
-                    </div>
-                    {index < getTranslationArray('solutions.processComparison.softwareExpert.steps').length - 1 && (
-                      <div className="flex justify-start ml-3">
-                        <div className="w-0.5 h-3 bg-amber-300"></div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* 外包咨询顾问 - 12步 */}
-            <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl p-6 hover:shadow-lg transition-all duration-300 border border-slate-200">
-              <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-slate-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-slate-800">{t('solutions.processComparison.consultant.title')}</h3>
-                <p className="text-sm text-slate-600 mt-2">{t('solutions.processComparison.consultant.description')}</p>
-              </div>
-              
-              <div className="space-y-3 max-h-96 overflow-y-auto">
-                {getTranslationArray('solutions.processComparison.consultant.steps').map((stepTitle: string, index: number) => (
-                  <div key={index}>
-                    <div className="flex items-center group">
-                      <div className="w-6 h-6 bg-slate-600 rounded-full flex items-center justify-center text-white font-bold text-xs mr-3 group-hover:scale-110 transition-transform">{index + 1}</div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 text-sm">{stepTitle}</h4>
-                      </div>
-                    </div>
-                    {index < getTranslationArray('solutions.processComparison.consultant.steps').length - 1 && (
-                      <div className="flex justify-start ml-3">
-                        <div className="w-0.5 h-3 bg-slate-300"></div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
+          {/* 演示控制按钮 */}
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setIsLooping(!isLooping)}
+              className={`px-3 py-1 text-xs rounded ${
+                isLooping 
+                  ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                  : 'bg-gray-600 text-white hover:bg-gray-700'
+              }`}
+            >
+              {isLooping ? 'Loop Mode' : 'Single Mode'}
+            </button>
+            <button
+              onClick={toggleAutoPlay}
+              className={`px-3 py-1 text-xs rounded ${
+                isAutoPlaying 
+                  ? 'bg-yellow-600 text-white hover:bg-yellow-700' 
+                  : 'bg-green-600 text-white hover:bg-green-700'
+              }`}
+            >
+              {isAutoPlaying ? 'Pause Demo' : 'Continue Demo'}
+            </button>
+            <button
+              onClick={resetDemo}
+              className="px-3 py-1 text-xs bg-gray-600 text-white rounded hover:bg-gray-700"
+            >
+              Restart
+            </button>
           </div>
         </div>
       </div>
 
-      {/* 悬浮试用卡片 */}
-      {showTrialCard && (
-        <div
-          className={`fixed z-50 bg-white rounded-xl shadow-2xl border border-gray-200 p-4 w-64 ${
-            isDragging ? 'cursor-grabbing' : 'cursor-grab'
-          } transition-opacity duration-300`}
-          style={{
-            left: `${cardPosition.x}px`,
-            top: `${cardPosition.y}px`,
-          }}
-          onMouseDown={handleMouseDown}
-        >
-          <div className="text-center space-y-4">
+      {/* Main Content - 三栏布局 */}
+      <div className="flex h-full">
+        {/* 左侧栏 - 工作阶段和风险评估 */}
+        <div className="w-64 bg-gray-800 border-r border-gray-700 flex flex-col">
+          {/* 工作阶段 */}
+          <div className="p-4 border-b border-gray-700">
+            <h4 className="text-emerald-400 font-medium text-sm mb-3">Work Stages</h4>
+            <div className="space-y-2">
+              {workStages.map((stage, index) => (
+                <div key={index} className="flex items-center space-x-2">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
+                    stage.status === 'completed' ? 'bg-emerald-600 text-white' :
+                    stage.status === 'current' ? 'bg-yellow-600 text-white' :
+                    'bg-gray-600 text-gray-300'
+                  }`}>
+                    {stage.icon}
+                  </div>
+                  <span className={`text-xs ${
+                    stage.status === 'completed' ? 'text-emerald-400' :
+                    stage.status === 'current' ? 'text-yellow-400' :
+                    'text-gray-400'
+                  }`}>
+                    {stage.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 风险评估与质量评分 */}
+          <div className="flex-1 p-3 overflow-y-auto">
+            <h4 className="text-emerald-400 font-medium text-sm mb-3">Risk Assessment & Quality Scoring</h4>
             
-            <h3 className="text-lg font-bold text-gray-900">{t('trial.card.title')}</h3>
-            
-            <div className="space-y-2 text-sm text-gray-600">
-              <div className="flex items-center justify-center space-x-2">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                <span>{t('trial.card.feature1')}</span>
+            {/* 数据质量评分 */}
+            <div className="mb-4">
+              <h5 className="text-white font-medium text-xs mb-2">Data Quality Score</h5>
+              <div className="space-y-1">
+                {qualityMetrics.map((metric, index) => (
+                  <div key={index} className="flex justify-between text-xs">
+                    <span className="text-gray-300">{metric.name}</span>
+                    <span className="text-emerald-400 font-medium text-xs">{metric.score}</span>
+                  </div>
+                ))}
               </div>
-              <div className="flex items-center justify-center space-x-2">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                <span>{t('trial.card.feature2')}</span>
+              <div className="mt-2 pt-2 border-t border-gray-600">
+                <div className="flex justify-between">
+                  <span className="text-white font-medium text-xs">Overall Quality Score</span>
+                  <span className="text-emerald-400 font-bold text-sm">88</span>
+                </div>
               </div>
             </div>
-            
-            <button 
-              onClick={onStartTrial}
-              className="w-full bg-emerald-600 text-white py-2 px-4 rounded-lg hover:bg-emerald-700 transition-colors font-semibold shadow-lg text-sm"
-            >
-              {t('trial.card.button')}
-            </button>
+
+            {/* 不确定性风险 */}
+            <div>
+              <h5 className="text-white font-medium text-xs mb-2">Uncertainty Risk</h5>
+              <div className="space-y-1">
+                {riskMetrics.map((metric, index) => (
+                  <div key={index} className="flex justify-between text-xs">
+                    <span className="text-gray-300">{metric.name}</span>
+                    <span className="text-yellow-400 font-medium text-xs">{metric.value}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-2 pt-2 border-t border-gray-600">
+                <div className="flex justify-between">
+                  <span className="text-white font-medium text-xs">Overall Risk Level</span>
+                  <span className="text-yellow-400 font-bold text-xs">Medium</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      )}
-    </section>
+
+        {/* 中间区域 - 基础信息和生命周期分析 */}
+        <div className="flex-1 flex flex-col bg-gray-900">
+          {/* 基础信息 */}
+          <div className="p-6 border-b border-gray-700 bg-gray-800">
+            <h4 className="text-emerald-400 font-medium text-sm mb-3">Basic Information</h4>
+            <div className="grid grid-cols-3 gap-3">
+              <div>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">Product Name</label>
+                <input 
+                  type="text" 
+                  value="Smartphone" 
+                  className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs"
+                  readOnly
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">Sales Region</label>
+                <select className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs">
+                  <option>Global</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">Applicable Regulation</label>
+                <select className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs">
+                  <option>ISO 14040/14067</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">Data Collection Period</label>
+                <input 
+                  type="text" 
+                  value="2023 Annual" 
+                  className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs"
+                  readOnly
+                />
+              </div>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">Lifecycle Scope</label>
+                <select className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs">
+                  <option>Cradle to Grave</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs text-gray-400 mb-1 text-xs">Disclosure Level</label>
+                <select className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs">
+                  <option>Certified Level</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* 产品碳足迹生命周期分析 */}
+          <div className="flex-1 p-4">
+            <h4 className="text-emerald-400 font-medium text-sm mb-3">Product Carbon Footprint Lifecycle Analysis</h4>
+            
+            {/* 生命周期标签页 */}
+            <div className="flex space-x-1 mb-3">
+              {lifecycleTabs.map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => handleTabClick(tab)}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-t-lg transition-colors ${
+                    activeTab === tab
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                  }`}
+                >
+                  {tab}
+                </button>
+              ))}
+            </div>
+
+            {/* 标签页内容 */}
+            <div className="bg-gray-800 rounded-lg p-3 h-full overflow-y-auto relative">
+              {/* BOM动画效果 */}
+              {showBomAnimation && activeTab === 'Raw Materials' && (
+                <div className="absolute inset-0 bg-emerald-600/20 rounded-lg flex items-center justify-center z-10 animate-pulse">
+                  <div className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                    📊 BOM Table Uploading...
+                  </div>
+                </div>
+              )}
+              
+              {activeTab === 'Raw Materials' && (
+                <div>
+                  <h5 className="text-white font-medium text-xs mb-2">Raw Materials</h5>
+                  <div className="mb-3">
+                    <h6 className="text-emerald-400 text-xs font-medium mb-2">BOM Information</h6>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="border-b border-gray-600">
+                            <th className="text-left py-1 text-gray-400 text-xs">Material Name</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">Description</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">Weight</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">Usage</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">Unit</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">Emission Factor</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">Factor Source</th>
+                            <th className="text-left py-1 text-gray-400 text-xs">Confidence</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {bomData.map((item, index) => (
+                            <tr key={index} className="border-b border-gray-700">
+                              <td className="py-1 text-white text-xs">{item.material}</td>
+                              <td className="py-1 text-gray-300 text-xs">{item.desc}</td>
+                              <td className="py-1 text-gray-300 text-xs">{item.weight}</td>
+                              <td className="py-1 text-gray-300 text-xs">{item.usage}</td>
+                              <td className="py-1 text-gray-300 text-xs">{item.unit}</td>
+                              <td className="py-1 text-emerald-400 text-xs">{item.factor}</td>
+                              <td className="py-1 text-blue-400 text-xs">{item.source}</td>
+                              <td className="py-1 text-green-400 text-xs">{item.confidence}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              {activeTab === 'Manufacturing' && (
+                <div>
+                  <h5 className="text-white font-medium text-xs mb-2">Manufacturing</h5>
+                  <div className="space-y-2">
+                    <div className="grid grid-cols-2 gap-3 mb-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Electricity Consumption (kWh)</label>
+                        <input type="text" value="12.5" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Natural Gas (m³)</label>
+                        <input type="text" value="2.3" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 mb-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Industrial Water (L)</label>
+                        <input type="text" value="45" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Steam Consumption (kg)</label>
+                        <input type="text" value="8.2" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 mb-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Compressed Air (m³)</label>
+                        <input type="text" value="15.6" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Wastewater Treatment (L)</label>
+                        <input type="text" value="38" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Production Efficiency (%)</label>
+                        <input type="text" value="92.5" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Waste Rate (%)</label>
+                        <input type="text" value="3.2" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'Transportation' && (
+                <div>
+                  <h5 className="text-white font-medium text-xs mb-2">Transportation</h5>
+                  <div className="space-y-2">
+                    <div className="grid grid-cols-2 gap-3 mb-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Sea Transport Distance (km)</label>
+                        <input type="text" value="8000" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Road Transport (km)</label>
+                        <input type="text" value="500" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 mb-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Rail Transport (km)</label>
+                        <input type="text" value="1200" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Air Transport (km)</label>
+                        <input type="text" value="0" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 mb-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Packaging Weight (g)</label>
+                        <input type="text" value="85" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Load Utilization (%)</label>
+                        <input type="text" value="78" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Storage Time (days)</label>
+                        <input type="text" value="15" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Last Mile (km)</label>
+                        <input type="text" value="25" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'Usage Phase' && (
+                <div>
+                  <h5 className="text-white font-medium text-xs mb-2">Usage Phase</h5>
+                  <div className="space-y-2">
+                    <div className="grid grid-cols-2 gap-3 mb-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Annual Electricity (kWh)</label>
+                        <input type="text" value="15.6" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Service Life (years)</label>
+                        <input type="text" value="3" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 mb-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Standby Power (W)</label>
+                        <input type="text" value="0.8" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Active Power (W)</label>
+                        <input type="text" value="3.2" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 mb-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Charging Efficiency (%)</label>
+                        <input type="text" value="85" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Daily Usage (h)</label>
+                        <input type="text" value="4.5" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Maintenance Frequency (times/year)</label>
+                        <input type="text" value="2" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Software Updates (times/year)</label>
+                        <input type="text" value="12" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'End of Life' && (
+                <div>
+                  <h5 className="text-white font-medium text-xs mb-2">End of Life</h5>
+                  <div className="space-y-2">
+                    <div className="grid grid-cols-2 gap-3 mb-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Recycling Rate (%)</label>
+                        <input type="text" value="75" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Incineration Rate (%)</label>
+                        <input type="text" value="20" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 mb-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Landfill Rate (%)</label>
+                        <input type="text" value="5" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Disassembly Efficiency (%)</label>
+                        <input type="text" value="88" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 mb-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Precious Metal Recovery (%)</label>
+                        <input type="text" value="92" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Plastic Recovery (%)</label>
+                        <input type="text" value="65" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Transport to Recycling (km)</label>
+                        <input type="text" value="35" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-400 mb-1 text-xs">Processing Energy (kWh)</label>
+                        <input type="text" value="2.8" className="w-full px-2 py-1 bg-gray-700 border border-gray-600 rounded text-white text-xs" readOnly />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* 右侧栏 - AI助手 */}
+        <div className="w-80 bg-gray-800 border-l border-gray-700 flex flex-col h-full">
+          <div className="p-4 border-b border-gray-700">
+            <h4 className="text-emerald-400 font-medium text-sm flex items-center">
+              💬 Climate Seal AI
+            </h4>
+          </div>
+          
+          <div className="flex-1 p-3 overflow-y-auto flex flex-col">
+            <div className="space-y-3 flex-1">
+              {displayedMessages.map((message, index) => (
+                <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-xs p-2 rounded-lg text-xs ${
+                    message.type === 'user' 
+                      ? 'bg-emerald-600 text-white' 
+                      : 'bg-gray-700 text-gray-200'
+                  }`}>
+                    {message.content}
+                  </div>
+                </div>
+              ))}
+              
+              {/* 正在输入指示器 */}
+              {isAutoPlaying && currentMessageIndex < chatMessages.length && (
+                <div className="flex justify-start">
+                  <div className="bg-gray-700 text-gray-200 p-2 rounded-lg text-xs">
+                    ...
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Chat input area */}
+            <div className="mt-3 pt-3 border-t border-gray-700">
+              <div className="flex space-x-2">
+                <input 
+                  type="text" 
+                  placeholder="Type message..." 
+                  className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm"
+                  disabled
+                />
+                <button className="px-3 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors">
+                  <Send className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          {/* Chat input area */}
+          <div className="p-3 border-t border-gray-700">
+            <div className="flex space-x-2">
+              <input 
+                type="text" 
+                placeholder="Type message..." 
+                className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm"
+                disabled
+              />
+              <button className="px-3 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors">
+                <Send className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default Solutions;
+export default ProductDemo;
