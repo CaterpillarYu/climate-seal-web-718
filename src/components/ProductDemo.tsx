@@ -28,10 +28,6 @@ const ProductDemo = () => {
   ];
 
   const qualityMetrics = [
-    { name: 'Parameter Uncertainty', value: '15%' },
-    { name: 'Model Uncertainty', value: '12%' },
-    { name: 'Scenario Uncertainty', value: '18%' },
-    { name: 'Data Quality Uncertainty', value: '10%' }
   ];
 
   const bomData = [
