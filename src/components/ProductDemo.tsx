@@ -32,12 +32,23 @@ const ProductDemo = () => {
     { material: 'Glass', desc: 'Screen Material', weight: '15g', usage: '1', unit: 'pcs', factor: '1.35', source: 'Ecoinvent', confidence: '91%' },
     { material: 'ABS Plastic', desc: 'Internal Components', weight: '12g', usage: '1', unit: 'pcs', factor: '3.2', source: 'Ecoinvent', confidence: '93%' },
     { material: 'Rare Earth Elements', desc: 'Electronic Components', weight: '2g', usage: '1', unit: 'pcs', factor: '45.8', source: 'Ecoinvent', confidence: '90%' },
-    { material: 'Copper', desc: 'Wire Material', weight: '8g', usage: '1', unit: 'pcs', factor: '4.1', source: 'Ecoinvent', confidence: '95%' },
-    { material: 'Silicon Chip', desc: 'Processor Chip', weight: '3g', usage: '1', unit: 'pcs', factor: '15.2', source: 'Ecoinvent', confidence: '96%' },
-    { material: 'Steel', desc: 'Internal Frame', weight: '18g', usage: '1', unit: 'pcs', factor: '2.8', source: 'Ecoinvent', confidence: '94%' },
-    { material: 'Ceramic', desc: 'Capacitor Material', weight: '4g', usage: '1', unit: 'pcs', factor: '6.7', source: 'Ecoinvent', confidence: '89%' },
     { material: 'Silver', desc: 'Circuit Connection', weight: '0.5g', usage: '1', unit: 'pcs', factor: '28.4', source: 'Ecoinvent', confidence: '97%' },
     { material: 'Polymer Film', desc: 'Screen Protection', weight: '2g', usage: '1', unit: 'pcs', factor: '5.3', source: 'Ecoinvent', confidence: '88%' }
+  ];
+
+  const dataQualityMetrics = [
+    { name: 'Raw Materials', score: '92' },
+    { name: 'Manufacturing', score: '88' },
+    { name: 'Transportation', score: '85' },
+    { name: 'Usage Phase', score: '90' },
+    { name: 'End of Life', score: '82' }
+  ];
+
+  const riskMetrics = [
+    { name: 'Data Completeness', value: '±8%' },
+    { name: 'Precision Uncertainty', value: '±12%' },
+    { name: 'Temporal Variation', value: '±6%' },
+    { name: 'Geographic Variation', value: '±10%' }
   ];
 
   // Get chat messages from translation
@@ -220,7 +231,7 @@ const ProductDemo = () => {
             <div className="mb-4">
               <h5 className="text-white font-medium text-xs mb-2">Data Quality Score</h5>
               <div className="space-y-1">
-                {qualityMetrics.map((metric, index) => (
+                {dataQualityMetrics.map((metric, index) => (
                   <div key={index} className="flex justify-between text-xs">
                     <span className="text-gray-300">{metric.name}</span>
                     <span className="text-emerald-400 font-medium text-xs">{metric.score}</span>
@@ -618,21 +629,6 @@ const ProductDemo = () => {
                   <Send className="h-4 w-4" />
                 </button>
               </div>
-            </div>
-          </div>
-          
-          {/* Chat input area */}
-          <div className="p-3 border-t border-gray-700">
-            <div className="flex space-x-2">
-              <input 
-                type="text" 
-                placeholder="Type message..." 
-                className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white text-sm"
-                disabled
-              />
-              <button className="px-3 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors">
-                <Send className="h-4 w-4" />
-              </button>
             </div>
           </div>
         </div>
