@@ -28,10 +28,6 @@ const ProductDemo = () => {
   ];
 
   const qualityMetrics = [
-  ];
-
-  const bomData = [
-    { material: 'Aluminum Alloy', desc: 'Housing Material', weight: '45g', usage: '1', unit: 'pcs', factor: '8.24', source: 'Ecoinvent', confidence: '92%' },
     { material: 'Lithium Battery', desc: 'Power Component', weight: '28g', usage: '1', unit: 'pcs', factor: '12.6', source: 'Ecoinvent', confidence: '94%' },
     { material: 'Glass', desc: 'Screen Material', weight: '15g', usage: '1', unit: 'pcs', factor: '1.35', source: 'Ecoinvent', confidence: '91%' },
     { material: 'ABS Plastic', desc: 'Internal Components', weight: '12g', usage: '1', unit: 'pcs', factor: '3.2', source: 'Ecoinvent', confidence: '93%' },
